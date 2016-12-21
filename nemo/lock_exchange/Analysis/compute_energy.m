@@ -1,4 +1,5 @@
 clear all
+% this file computes energetics in NEMO
 %close all
 
 format long
