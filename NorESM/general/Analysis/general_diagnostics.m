@@ -5,12 +5,12 @@
 %root_folder='/hexagon/work/milicak/archive/';
 %root_folder='/hexagon/work/matsbn/archive/';
 
-root_folder='/hexagon/work/agu002/archive/';
+%root_folder='/hexagon/work/agu002/archive/';
 %root_folder='/hexagon/work/agu002/noresm/';
 
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases_test_Xmas2015/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
-%root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+root_folder='/fimm/work/milicak/mnt/viljework/archive/';
 %root_folder='/fimm/work/milicak/mnt/viljeworkalok/archive/';
 %root_folder='/hexagon/work/detivan/archive/';
 
@@ -18,15 +18,15 @@ clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 1; % first year
-lyear = 400; % last year
+fyear = 10; % first year
+lyear = 20; % last year
 
 m2y = 0; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
-%onedegree = true;
-%low=true;
-onedegree = false;
-low=false;
+onedegree = true;
+low=true;
+%onedegree = false;
+%low=false;
 
 if (tripolar)
   % tripolar 1degree grid
@@ -57,7 +57,7 @@ sshmean = false;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
-amoc_time = true;
+amoc_time = false;
 amoc_mean = false;
 kappaN2 = false;
 drake_tr = false;
@@ -66,7 +66,7 @@ time_mean_mld = false;
 time_vertical_tracer = false;
 global_tracers = false;
 global_upwelling = false;
-global_surface = false;
+global_surface = true;
 global_zonalmean = false;
 global_depthbias = false;
 EminusP = false;

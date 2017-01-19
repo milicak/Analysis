@@ -3,13 +3,14 @@ grid_file='/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/DATA/ncar-pop/areacello_fx_C
 lon=ncgetvar(grid_file,'lon');
 lat=ncgetvar(grid_file,'lat');
 
-project_name = 'B1850CN_f19_tn11_kdsens';
+%project_name = 'B1850CN_f19_tn11_kdsens';
 %project_name = 'B1850CN_f19_tn11_kdsens01';
 %project_name = 'B1850CN_f19_tn11_kdsens02';
 %project_name = 'B1850CN_f19_tn11_kdsens03';
 %project_name = 'B1850CN_f19_tn11_kdsens04';
 %project_name = 'B1850CN_f19_tn11_kdsens05';
 %project_name = 'B1850CN_f19_tn11_kdsens06';
+project_name = 'B1850CN_f19_tn11_kdsens07';
 
 fyear = 1;
 lyear = 250;

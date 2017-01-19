@@ -14,7 +14,8 @@ area=ncgetvar(grid_file,'areacello');
 %project_name = 'B1850CN_f19_tn11_kdsens03';
 %project_name = 'B1850CN_f19_tn11_kdsens04';
 %project_name = 'B1850CN_f19_tn11_kdsens05'
-project_name = 'B1850CN_f19_tn11_kdsens06'
+%project_name = 'B1850CN_f19_tn11_kdsens06'
+project_name = 'B1850CN_f19_tn11_kdsens07';
 
 filename=['matfiles/' project_name '_airslp_mean_' num2str(fyear) '_' num2str(lyear) '.mat'];
 load(filename)

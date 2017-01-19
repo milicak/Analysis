@@ -7,15 +7,16 @@ Lhsub = 2.834E6;   % Latent heat of sublimation (J / kg)
 Lhfus = Lhsub - Lhvap;  % Latent heat of fusion (J / kg)
 rearth = 6.373E6      % Radius of Earth (m)
 
-root_name = '/fimm/work/milicak/mnt/viljework/archive/';
-%root_name = '/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
+%root_name = '/fimm/work/milicak/mnt/viljework/archive/';
+root_name = '/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
 %project_name = 'B1850CN_f19_tn11_kdsens';
 %project_name = 'B1850CN_f19_tn11_kdsens01';
 %project_name = 'B1850CN_f19_tn11_kdsens02';
 %project_name = 'B1850CN_f19_tn11_kdsens03';
 %project_name = 'B1850CN_f19_tn11_kdsens04';
 %project_name = 'B1850CN_f19_tn11_kdsens05';
-project_name = 'B1850CN_f19_tn11_kdsens06';
+%project_name = 'B1850CN_f19_tn11_kdsens06';
+project_name = 'B1850CN_f19_tn11_kdsens07';
 
 folder_name = [root_name project_name '/atm/hist/'];
 
@@ -137,4 +138,4 @@ end
 
 save(['matfiles/' project_name '_airheattransport_mean_' num2str(fyear) '_' num2str(lyear) '.mat'],'atmheattransport','oceanheattransport','totalheattransport','atmlatentheattransport','atmdryheattransport','lon','lat')
 
-exit
+%exit

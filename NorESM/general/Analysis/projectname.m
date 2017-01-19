@@ -40,8 +40,11 @@ properties
 %expid='NOIIA_T62_tn025_default_visc05'
 %expid='NOIIA_T62_tn11_energy_cnst03'
 
-expid='NBF1850_f19_tn11_difest'
+expid='NBF1850_f19_tn11_sst_sss_rlx_01'
+
+%expid='NBF1850_f19_tn11_difest'
 %expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV'
+%expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV_450'
 
 %expid='NBF1850OC_f19_tn11_test_GM_02'
 %expid='NBF1850OC_f19_tn11_01'

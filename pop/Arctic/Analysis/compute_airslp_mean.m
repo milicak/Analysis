@@ -9,7 +9,8 @@ root_name = '/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
 %project_name = 'B1850CN_f19_tn11_kdsens03';
 %project_name = 'B1850CN_f19_tn11_kdsens04';
 %project_name = 'B1850CN_f19_tn11_kdsens05'
-project_name = 'B1850CN_f19_tn11_kdsens06'
+%project_name = 'B1850CN_f19_tn11_kdsens06'
+project_name = 'B1850CN_f19_tn11_kdsens07';
 
 folder_name = [root_name project_name '/atm/hist/'];
 
