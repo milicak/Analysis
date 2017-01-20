@@ -1,2 +1,6 @@
 *.eps
 *.png
+*.mat
+*.nc
+*.out
+*MPICH_RANK*
