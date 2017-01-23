@@ -53,8 +53,8 @@ end
   sss_woa09=s(:,:,1);
   clear nx ny nz lon lat depth t s ptmp
 % Load time averaged model data
-%load(['matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat']);
-load(['/export/grunchfs/unibjerknes/milicak/bckup/Analysis/NorESM/general/Analysis/matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat']);
+load(['matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat']);
+%load(['/export/grunchfs/unibjerknes/milicak/bckup/Analysis/NorESM/general/Analysis/matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat']);
 nx_a=nx;
 ny_a=ny;
 depth_a=depth;
