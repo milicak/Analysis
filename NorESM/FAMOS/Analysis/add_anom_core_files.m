@@ -1,6 +1,6 @@
 clear all
 
-index=4;
+index=1;
 
 filenameu=['ncep.u_10.T62.'];
 filenamev=['ncep.v_10.T62.'];
@@ -41,7 +41,7 @@ slp_anom(isnan(slp_anom))=0;
 
 
 %for year=1948:2009
-for year=1979:2009
+for year=1980:2009
   % u-10
   if year==2005
     endname=endname2;
@@ -54,19 +54,37 @@ for year=1979:2009
   end
   fname=[root_folder_ctrl filenameu num2str(year) endname];
   var=ncgetvar(fname,'u_10'); 
-  var=var+repmat(u_10_anom,[1 1 size(var,3)]);
+  if(year==2009)
+    dnm=zeros(size(var,1),size(var,2),size(var,3));
+    dnm(:,:,1:end-8)=repmat(u_10_anom,[1 1 size(var,3)-8]);
+    var=var+dnm;
+  else
+    var=var+repmat(u_10_anom,[1 1 size(var,3)]);
+  end
   fname=[root_folder filenameu num2str(year) endname]
   ncwrite(fname,'u_10',var);
   % v-10
   fname=[root_folder_ctrl filenamev num2str(year) endname];
   var=ncgetvar(fname,'v_10'); 
-  var=var+repmat(v_10_anom,[1 1 size(var,3)]);
+  if(year==2009)
+    dnm=zeros(size(var,1),size(var,2),size(var,3));
+    dnm(:,:,1:end-8)=repmat(v_10_anom,[1 1 size(var,3)-8]);
+    var=var+dnm;
+  else
+    var=var+repmat(v_10_anom,[1 1 size(var,3)]);
+  end
   fname=[root_folder filenamev num2str(year) endname]
   ncwrite(fname,'v_10',var);
   % slp
   fname=[root_folder_ctrl filenameslp num2str(year) endname];
   var=ncgetvar(fname,'slp_'); 
-  var=var+repmat(slp_anom,[1 1 size(var,3)]);
+  if(year==2009)
+    dnm=zeros(size(var,1),size(var,2),size(var,3));
+    dnm(:,:,1:end-8)=repmat(slp_anom,[1 1 size(var,3)-8]);
+    var=var+dnm;
+  else
+    var=var+repmat(slp_anom,[1 1 size(var,3)]);
+  end
   fname=[root_folder filenameslp num2str(year) endname]
   ncwrite(fname,'slp_',var);
 end

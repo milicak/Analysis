@@ -64,10 +64,48 @@ switch noresmgrid
       % add last point
       tnoresm_woa(:,end+1,:) = tnoresm_woa(:,end,:);
       snoresm_woa(:,end+1,:) = snoresm_woa(:,end,:);
-
-
-
-    case 'tnx1v2'
+    case 'tnx0.25v1'
+      display('mehmet2')
+      map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_woa09_1deg_to_noresm_tnx1v1_patch_.nc'; 
+      %map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_woa09_1deg_to_noresm_tnx1v1_aave_.nc'; 
+      grid_file ='/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx1v1/20120120/grid.nc';
+      znoresm = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth');
+      znoresm_bnds =  ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth_bnds');
+      t1 = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','templvl');
+      nx_b=ncgetdim(grid_file,'x');                                                                        
+      ny_b=ncgetdim(grid_file,'y');                                                                        
+      % Read interpolation indexes and weights                                        
+      n_a=ncgetdim(map_file,'n_a');                                                   
+      n_b=ncgetdim(map_file,'n_b');                                                   
+      S=sparse(ncgetvar(map_file,'row'),ncgetvar(map_file,'col'), ...                 
+               ncgetvar(map_file,'S'),n_b,n_a);                                                      
+      for k=1:length(zwoa)
+        t_src=reshape(twoa(:,:,k),[],1);                                     
+        s_src=reshape(swoa(:,:,k),[],1); 
+        t_src(find(isnan(t_src)))=0;                                                  
+        s_src(find(isnan(s_src)))=0;                                                  
+        t_dst(:,:,k)=reshape(S*t_src,nx_b,ny_b-1);                                      
+        s_dst(:,:,k)=reshape(S*s_src,nx_b,ny_b-1); 
+      end
+      for k=1:length(znoresm)-5
+          k
+          kindn = max(find(zwoa<=znoresm(k)));
+          kindp = min(find(zwoa>znoresm(k)));
+          dzn = abs(znoresm(k) - zwoa(kindn));
+          dzp = abs(znoresm(k) - zwoa(kindp));
+          if(isempty(dzp)~=1)
+              tnoresm_woa(:,:,k) = (t_dst(:,:,kindn)*dzp+t_dst(:,:,kindp)*dzn) ...
+              /(dzn+dzp);
+              snoresm_woa(:,:,k) = (s_dst(:,:,kindn)*dzp+s_dst(:,:,kindp)*dzn) ...
+              /(dzn+dzp);
+          else
+              tnoresm_woa(:,:,k) = (t_dst(:,:,kindn));
+              snoresm_woa(:,:,k) = (s_dst(:,:,kindn));
+          end
+      end
+      % add last point
+      tnoresm_woa(:,end+1,:) = tnoresm_woa(:,end,:);
+      snoresm_woa(:,end+1,:) = snoresm_woa(:,end,:);
 
     end
 % create netcdf for WOA in NorESM grid
