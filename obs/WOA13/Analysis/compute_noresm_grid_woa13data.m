@@ -18,7 +18,8 @@ dnm = swoa;
 swoa(1:180,:,:) = swoa(181:end,:,:);
 swoa(181:end,:,:) = dnm(1:180,:,:);
 
-noresmgrid = 'tnx1v1'
+%noresmgrid = 'tnx1v1'
+noresmgrid = 'tnx0.25v1'
 woa_noresm_file = ['WOA13_' noresmgrid '_65layers.nc'];
 
 switch noresmgrid
@@ -29,7 +30,6 @@ switch noresmgrid
       grid_file ='/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx1v1/20120120/grid.nc';
       znoresm = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth');
       znoresm_bnds =  ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth_bnds');
-      t1 = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','templvl');
       nx_b=ncgetdim(grid_file,'x');                                                                        
       ny_b=ncgetdim(grid_file,'y');                                                                        
       % Read interpolation indexes and weights                                        
@@ -64,14 +64,13 @@ switch noresmgrid
       % add last point
       tnoresm_woa(:,end+1,:) = tnoresm_woa(:,end,:);
       snoresm_woa(:,end+1,:) = snoresm_woa(:,end,:);
+      lonmicom
     case 'tnx0.25v1'
       display('mehmet2')
-      map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_woa09_1deg_to_noresm_tnx1v1_patch_.nc'; 
-      %map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_woa09_1deg_to_noresm_tnx1v1_aave_.nc'; 
-      grid_file ='/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx1v1/20120120/grid.nc';
+      map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_woa09_1deg_to_noresm_tnx0.25v1_aave_.nc'
+      grid_file ='/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx0.25v1/20130930/grid.nc';
       znoresm = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth');
       znoresm_bnds =  ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','depth_bnds');
-      t1 = ncread('/work/milicak/mnt/norstore/NS2345K/noresm/cases/NOIIA_T62_tn11_sr10m60d_01/ocn/hist/NOIIA_T62_tn11_sr10m60d_01.micom.hm.0001-01.nc','templvl');
       nx_b=ncgetdim(grid_file,'x');                                                                        
       ny_b=ncgetdim(grid_file,'y');                                                                        
       % Read interpolation indexes and weights                                        
@@ -106,6 +105,7 @@ switch noresmgrid
       % add last point
       tnoresm_woa(:,end+1,:) = tnoresm_woa(:,end,:);
       snoresm_woa(:,end+1,:) = snoresm_woa(:,end,:);
+      lonmicom2
 
     end
 % create netcdf for WOA in NorESM grid
@@ -141,7 +141,6 @@ netcdf.putAtt(ncid,swoa_varid,'coordinates','TLON TLAT');
 
 % End definitions and leave define mode.
 netcdf.endDef(ncid)
-lonmicom
 % Provide values for time invariant variables.                                  
 netcdf.putVar(ncid,tlon_varid,single(lon));                                    
 netcdf.putVar(ncid,tlat_varid,single(lat));                                    

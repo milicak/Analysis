@@ -17,8 +17,7 @@ else
   sdate=sprintf('%4.4d%c%2.2d',fyear);
 end
 
-months2days=[31  28  31  30  31   30   31  31   30 31   30 31];
-yeardays=sum(months2days);
+mw=[31  28  31  30  31   30   31  31   30 31   30 31]./365.0;
 
 nx=ncgetdim([prefix sdate '.nc'],'x');
 ny=ncgetdim([prefix sdate '.nc'],'y');
@@ -31,11 +30,11 @@ ssh=zeros(nx,ny);
 if m2y==1
   for year=fyear:lyear
     for month=1:12
-      n=n+months2days(month);
       sdate=sprintf('%4.4d%c%2.2d',year,datesep,month);
       disp(sdate)
-      ssh=ssh+ncgetvar([prefix sdate '.nc'],'sealv').*mask.*months2days(month);
+      ssh=ssh+ncgetvar([prefix sdate '.nc'],'sealv').*mask.*mw(month);
     end
+    n = n+1;
   end
 else
   for year=fyear:lyear

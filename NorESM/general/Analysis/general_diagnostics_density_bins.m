@@ -1,4 +1,5 @@
-function [dens_bins]=general_diagnostics_density_bins(root_folder,expid,fyear,lyear,m2y)
+function [transfrm_area, transfrm_heat, transfrm_salt] = ...
+        general_diagnostics_density_bins(root_folder,expid,fyear,lyear,m2y)
 
 datesep='-';
 
@@ -124,7 +125,6 @@ for year=fyear:lyear
   end
   %dnm=1e-15*2*pi*rearth*rearth.*cumtrapz(lat'*pi/180,cos(lat*pi/180).*heat');
 end
-keyboard
 transfrm_area = transfrm_area./(nitr);
 transfrm_heat = transfrm_heat./(dinc*nitr);
 transfrm_salt = transfrm_salt./(dinc*nitr);

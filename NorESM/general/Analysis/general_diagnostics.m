@@ -5,25 +5,28 @@
 %root_folder='/hexagon/work/milicak/archive/';
 %root_folder='/hexagon/work/matsbn/archive/';
 
-%root_folder='/hexagon/work/agu002/archive/';
+root_folder='/hexagon/work/agu002/archive/';
+%root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm_mehmet/';
 %root_folder='/hexagon/work/agu002/noresm/';
 
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases_test_Xmas2015/';
+%root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
-root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+%root_folder='/fimm/work/milicak/mnt/viljework/archive/';
 %root_folder='/fimm/work/milicak/mnt/viljeworkalok/archive/';
 %root_folder='/hexagon/work/detivan/archive/';
+%root_folder='/hexagon/work/cgu025/archive/';
 
 clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 10; % first year
-lyear = 20; % last year
+fyear = 1; % first year
+lyear = 500; % last year
 
 m2y = 0; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
-onedegree = true;
+onedegree = false;
 low=true;
 %onedegree = false;
 %low=false;
@@ -57,7 +60,7 @@ sshmean = false;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
-amoc_time = false;
+amoc_time = true;
 amoc_mean = false;
 kappaN2 = false;
 drake_tr = false;
@@ -66,10 +69,11 @@ time_mean_mld = false;
 time_vertical_tracer = false;
 global_tracers = false;
 global_upwelling = false;
-global_surface = true;
+global_surface = false;
 global_zonalmean = false;
 global_depthbias = false;
 EminusP = false;
+density_bins = false;
 arctic_regions = false;
 atlantic_inflow = false;
 
@@ -87,6 +91,11 @@ end
 % total EminusP
 if(EminusP == true)
   [totalheatflx]=general_diagnostics_EminusP(root_folder,expid,fyear,lyear);
+end
+
+% density_bins_evolution
+if(density_bins == true)
+  [transfrm_area, transfrm_heat, transfrm_salt]=general_diagnostics_density_bins(root_folder,expid,fyear,lyear,m2y);
 end
 
 % amoc in time
@@ -328,8 +337,8 @@ if(global_zonalmean == true)
 
   %mask_index = 0; % 0 for Global
   %mask_index = 1; % 1 for Pacific Ocean
-  %mask_index = 2; % 2 for Atlantic Ocean
-  mask_index = 4; % 4 for Southern Ocean
+  mask_index = 2; % 2 for Atlantic Ocean
+  %mask_index = 4; % 4 for Southern Ocean
   %mask_index = 6; % 6 for Arctic Ocean
   %mask_index = 7; % 7 for Indian Ocean
 
