@@ -27,7 +27,7 @@ lat=lat(:,1:end-1);
 %vin, the ice volume, equal to the product of ain and the ice thickness hin.
 
 % region
-load('matfiles/region1.mat');
+load('matfiles_leads/region1.mat');
 in=insphpoly(lon,lat,lon1,lat1,0,90);
 in=double(in);
 in(in==0)=NaN;
@@ -89,7 +89,7 @@ for year=years
      LF_pdf=LF_pdf./(months2days(month)-daystr+1);
      LF_pdf_dim=LF_pdf_dim./(months2days(month)-daystr+1);
 keyboard
-     savename1=['matfiles/region1_LF_pdf_' sprintf('%4.4d',year) '_' sprintf('%2.2d',month) '.mat']
+     savename1=['matfiles_leads/region1_LF_pdf_' sprintf('%4.4d',year) '_' sprintf('%2.2d',month) '.mat']
      save(savename1,'LF_pdf','LF_pdf_dim');
      %tmp=tmp+dnm;
   end
