@@ -3,19 +3,36 @@
 clear all
 
 root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/';
-modelname = 'NorESM';
-gridname = '/fimm/home/bjerknes/milicak/Analysis/NorESM/climatology/Analysis/grid.nc';
+modelname = 'seaice_obs';
+gridname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/seaice_obs/nsidc_sic_north_1979_2015_landundef_latlon.nc';
 
-lon = ncread(gridname,'plon');
-lat = ncread(gridname,'plat');
-area = ncread(gridname,'parea');
+lon = ncread(gridname,'lon');
+lat = ncread(gridname,'lat');
+
+resolution = 1; %1; %0.5;
+nx = size(lon,1);
+ny = size(lat,1);
+[x y] = meshgrid(lon,lat);
+lon = x';
+lat = y';
+deg2rad = pi/180;
+grid_corner_lat = zeros(4,nx,ny);
+grid_corner_lon = zeros(4,nx,ny);
+grid_corner_lat(1,:,:) = lat-0.5*resolution;
+grid_corner_lat(2,:,:) = lat-0.5*resolution;
+grid_corner_lat(3,:,:) = lat+0.5*resolution;
+grid_corner_lat(4,:,:) = lat+0.5*resolution;
+grid_corner_lon(1,:,:) = lon-0.5*resolution;
+grid_corner_lon(2,:,:) = lon+0.5*resolution;
+grid_corner_lon(3,:,:) = lon+0.5*resolution;
+grid_corner_lon(4,:,:) = lon-0.5*resolution;
+grid_area = 2*(sin(grid_corner_lat(4,1,:)*deg2rad) ...
+                -sin(grid_corner_lat(1,1,:)*deg2rad))*pi/nx;
+grid_area=ones(nx,1)*reshape(grid_area,1,[]);
+rad2m=distdim(1,'rad','m');
+area = grid_area*rad2m*rad2m;
 area = repmat(area,[1 1 348]);
 ice_cr = 0.15;
-
-% NorESM specific
-lon = lon(:,1:end-1);
-lat = lat(:,1:end-1);
-area = area(:,1:end-1,:);
 
 out = load('region_masks.mat');
 % lon1,lat1 is for Kara and Barents Sea
@@ -35,14 +52,16 @@ regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'L
 masks = containers.Map;
 ice_ext_regions = containers.Map;
 
-fname = '/NOIIA_T62_tn11_sr10m60d_01_ice_monthly_1-300.nc';
-icevariable = 'fice';
+fname = '/nsidc_sic_north_1979_2015_landundef_latlon.nc';
+icevariable = 'sic';
 filename = [root_folder modelname '/' fname];
 
 ice = ncread(filename,icevariable);
 % year from 1979 to 2007 ==> 348 months
-ice = ice(:,:,end-347:end);
-ice = ice./100;
+ice = ice(:,:,1:348);
+
+% specific to observation
+ice = ice;
 ice(ice < ice_cr) = NaN;
 
 for i = 1:8

@@ -3,19 +3,14 @@
 clear all
 
 root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/';
-modelname = 'NorESM';
-gridname = '/fimm/home/bjerknes/milicak/Analysis/NorESM/climatology/Analysis/grid.nc';
+modelname = 'gfdl-mom';
+gridname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/gfdl-mom/grids_bathymetry/ocean.static.nc';
 
-lon = ncread(gridname,'plon');
-lat = ncread(gridname,'plat');
-area = ncread(gridname,'parea');
+lon = ncread(gridname,'geolon_t');
+lat = ncread(gridname,'geolat_t');
+area = ncread(gridname,'area_t');
 area = repmat(area,[1 1 348]);
 ice_cr = 0.15;
-
-% NorESM specific
-lon = lon(:,1:end-1);
-lat = lat(:,1:end-1);
-area = area(:,1:end-1,:);
 
 out = load('region_masks.mat');
 % lon1,lat1 is for Kara and Barents Sea
@@ -35,14 +30,16 @@ regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'L
 masks = containers.Map;
 ice_ext_regions = containers.Map;
 
-fname = '/NOIIA_T62_tn11_sr10m60d_01_ice_monthly_1-300.nc';
-icevariable = 'fice';
+fname = '/seaice_extent_thick_conc/ice.194801-200712.CN.nc';
+icevariable = 'CN';
 filename = [root_folder modelname '/' fname];
 
 ice = ncread(filename,icevariable);
+%specific to gold
+ice = squeeze(nansum(ice,3));
+ice(ice<0) = NaN;
 % year from 1979 to 2007 ==> 348 months
 ice = ice(:,:,end-347:end);
-ice = ice./100;
 ice(ice < ice_cr) = NaN;
 
 for i = 1:8

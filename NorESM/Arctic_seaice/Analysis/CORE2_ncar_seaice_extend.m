@@ -3,19 +3,15 @@
 clear all
 
 root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/';
-modelname = 'NorESM';
-gridname = '/fimm/home/bjerknes/milicak/Analysis/NorESM/climatology/Analysis/grid.nc';
+modelname = 'ncar-pop';
+gridname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/ncar-pop/areacello_fx_CCSM4_piControl_r0i0p0.nc';
 
-lon = ncread(gridname,'plon');
-lat = ncread(gridname,'plat');
-area = ncread(gridname,'parea');
+lon = ncread(gridname,'lon');
+lat = ncread(gridname,'lat');
+area = ncread(gridname,'areacello');
 area = repmat(area,[1 1 348]);
 ice_cr = 0.15;
 
-% NorESM specific
-lon = lon(:,1:end-1);
-lat = lat(:,1:end-1);
-area = area(:,1:end-1,:);
 
 out = load('region_masks.mat');
 % lon1,lat1 is for Kara and Barents Sea
@@ -35,8 +31,8 @@ regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'L
 masks = containers.Map;
 ice_ext_regions = containers.Map;
 
-fname = '/NOIIA_T62_tn11_sr10m60d_01_ice_monthly_1-300.nc';
-icevariable = 'fice';
+fname = '/g40.000.cice.h.aice.nc';
+icevariable = 'aice';
 filename = [root_folder modelname '/' fname];
 
 ice = ncread(filename,icevariable);
