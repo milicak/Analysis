@@ -51,6 +51,7 @@ for i=1:length(regionnames)
     set(gcf, 'PaperPositionMode','auto') 
     out = load(['matfiles/' char(expnames(1)) '_ice_extentions.mat']);
     tmp = out.ice_ext_regions(char(regionnames(i)));
+    tmp(isnan(tmp)) = 0;
     tmp = reshape(tmp,[12 29]);
     tmp = nanmean(tmp,2);
     plot(time,(tmp-mean(tmp))*scale,'color',[color(1,1) color(1,2) color(1,3)] ...

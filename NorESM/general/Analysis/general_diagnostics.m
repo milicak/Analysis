@@ -22,7 +22,7 @@ proj=projectname;
 expid=proj.expid
 
 fyear = 1; % first year
-lyear = 500; % last year
+lyear = 475; % last year
 
 m2y = 0; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;

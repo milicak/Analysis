@@ -64,9 +64,11 @@ ice = ice(:,:,1:348);
 ice = ice;
 ice(ice < ice_cr) = NaN;
 
-for i = 1:8
+for i = 5
+%for i = 1:8
     in = insphpoly(lon,lat,eval(tmp1{i}),eval(tmp2{i}),0,90);
     in = double(in);
+    keyboard
     in(in==0) = NaN;
     masks(num2str(i)) = in;
     mask = in;
