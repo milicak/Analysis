@@ -5,7 +5,8 @@ load color_15
 color(1,:)=[0 0 0];
 color(7,:)=[0 1 1];
 
-out1 = load('matfiles/seaice_obs_ice_extentions.mat');
+%out1 = load('matfiles/seaice_obs_ice_extentions.mat');
+out1 = load('matfiles/seaice_obs_Had_ISST_ice_extentions.mat');
 out2 = load('matfiles/NorESM_ice_extentions.mat');
 out3 = load('matfiles/ncar-pop_ice_extentions.mat');
 out4 = load('matfiles/gfdl-gold_ice_extentions.mat');
@@ -13,10 +14,12 @@ out5 = load('matfiles/gfdl-mom_ice_extentions.mat');
 out6 = load('matfiles/nemo-cerfacs_ice_extentions.mat');
 out7 = load('matfiles/nemo-cnrm_ice_extentions.mat');
 
-expnames = [ {'seaice_obs'} {'NorESM'} {'ncar-pop'} {'gfdl-gold'} {'gfdl-mom'} ...
+%expnames = [ {'seaice_obs'} {'NorESM'} {'ncar-pop'} {'gfdl-gold'} {'gfdl-mom'} ...
+expnames = [ {'seaice_obs_Had_ISST'} {'NorESM'} {'ncar-pop'} {'gfdl-gold'} {'gfdl-mom'} ...
              {'nemo-cerfacs'} {'nemo-cnrm'}];
 
-legendnames = [ {'NSIDC'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
+%legendnames = [ {'NSIDC'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
+legendnames = [ {'HadISST'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
              {'CERFACS'} {'CNRM'}];
 
 regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'Labrador'} {'Eurasian'} {'Bering'}];
@@ -43,7 +46,7 @@ for i=1:length(regionnames)
     legend(gca,'show','Location','EastOutside')
     %ylabel('MMM total heat transport [TW]')                                         
     xlabel('time [months]')                                                          
-    xlim([1 12])
+    xlim([time(1) time(end)])
     set(gca,'Box','on')                                                             
     grid on
     set(gcf, 'units', 'centimeters', 'pos', [0 0 22.5 10])                          
