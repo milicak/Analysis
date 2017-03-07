@@ -29,7 +29,7 @@ l1=[-160.8939
                                    -144.9774
                                     -152.3421
                                      -158.5458
-                                      -160.8939];
+-160.8939];
 
 l2=[63.3333
    63.1359
@@ -49,7 +49,13 @@ l2=[63.3333
                                              66.5710
                                                 66.0005
                                                    63.8020
-                                                      63.3333];
+63.3333];
+l3 = [-160.1371 -173.5855];
+l4 = [65.8516 66.0217];
+l1(1:2) = l3;
+l2(1:2) = l4;
+l1(end) = l1(1);
+l2(end) = l2(1);
 
 in = insphpoly(lon1,lat1,l1,l2,0,90);
 in = double(in);
@@ -59,3 +65,4 @@ mask = repmat(mask,[1 1 size(rnfC2,3)]);
 rnfflx = rnfC1 +(rnfC2-rnfC1).*mask;
 
 filename = 'runoff.daitren.annual_iaf.20120419.nc';
+ncwrite(filename,'runoff',rnfflx);
