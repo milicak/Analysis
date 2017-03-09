@@ -1,12 +1,17 @@
 clear all
 
-rnfC1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.annual.141202.nc','runoff');
+rnfC1 = ncread('/bcmhsm/milicak/RUNS/runoff.daitren.clim.10FEB2011.nc','runoff');
+area1 = ncread('/bcmhsm/milicak/RUNS/runoff.daitren.clim.10FEB2011.nc','area');
+%rnfC1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.annual.141202.nc','runoff');
 rnfC2 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','runoff');
+area2 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','arear');
 lon1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','xc');
 lat1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','yc');
 
-rnfC1 = rnfC1(:,:,1);
-rnfC1 = repmat(rnfC1,[1 1 size(rnfC2,3)]);
+keyboard
+rnfC1 = repmat(rnfC1,[1 1 size(rnfC2,3)/size(rnfC1,3)]);
+%rnfC1 = rnfC1(:,:,1);
+%rnfC1 = repmat(rnfC1,[1 1 size(rnfC2,3)]);
 
 maskfile = 'ansmask.nc';
 %mask = double(ncread(maskfile,'ar_mask'));
@@ -64,5 +69,7 @@ mask = in;
 mask = repmat(mask,[1 1 size(rnfC2,3)]);
 rnfflx = rnfC1 +(rnfC2-rnfC1).*mask;
 
-filename = 'runoff.daitren.annual_iaf.20120419.nc';
+filename = 'runoff.daitren.annual_iaf.20120419_v2.nc';
+arear = ncread(filename,'arear');
 ncwrite(filename,'runoff',rnfflx);
+ncwrite(filename,'area',arear);
