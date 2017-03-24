@@ -1,4 +1,4 @@
-function [templvl salnlvl difdialvl]=general_diagnostics_timemean(root_folder,expid,m2y,fyear,lyear,grid_file)
+function [templvl salnlvl]=general_diagnostics_timemean(root_folder,expid,m2y,fyear,lyear,grid_file)
 
 mask=ncgetvar(grid_file,'pmask');
 
@@ -27,13 +27,15 @@ depth=ncgetvar([prefix sdate '.nc'],'depth');
 
 n=0;
 templvl=zeros(nx,ny,nz);
+mask=repmat(mask,[1 1 nz]);
 salnlvl=zeros(nx,ny,nz);
+if 0
 uvellvl=zeros(nx,ny,nz);
 vvellvl=zeros(nx,ny,nz);
 idlagelvl=zeros(nx,ny,nz);
 difisolvl=zeros(nx,ny,nz);
 difdialvl=zeros(nx,ny,nz);
-mask=repmat(mask,[1 1 nz]);
+end
 
 if m2y==1
   for year=fyear:lyear
@@ -43,11 +45,13 @@ if m2y==1
       disp(sdate)
       templvl=templvl+ncgetvar([prefix sdate '.nc'],'templvl').*mask.*months2days(month);
       salnlvl=salnlvl+ncgetvar([prefix sdate '.nc'],'salnlvl').*mask.*months2days(month);
+      if 0
       uvellvl=uvellvl+ncgetvar([prefix sdate '.nc'],'uvellvl').*mask.*months2days(month);
       vvellvl=vvellvl+ncgetvar([prefix sdate '.nc'],'vvellvl').*mask.*months2days(month);
       idlagelvl=idlagelvl+ncgetvar([prefix sdate '.nc'],'idlagelvl').*mask.*months2days(month);
       difisolvl=difisolvl+10.^ncgetvar([prefix sdate '.nc'],'difisolvl').*mask.*months2days(month);
       difdialvl=difdialvl+10.^ncgetvar([prefix sdate '.nc'],'difdialvl').*mask.*months2days(month);
+      end
     end
   end
 else
@@ -57,21 +61,26 @@ else
     disp(sdate)
     templvl=templvl+ncgetvar([prefix sdate '.nc'],'templvl').*mask;
     salnlvl=salnlvl+ncgetvar([prefix sdate '.nc'],'salnlvl').*mask;
+    if 0
     uvellvl=uvellvl+ncgetvar([prefix sdate '.nc'],'uvellvl').*mask;
     vvellvl=vvellvl+ncgetvar([prefix sdate '.nc'],'vvellvl').*mask;
     idlagelvl=idlagelvl+ncgetvar([prefix sdate '.nc'],'idlagelvl').*mask;
     difisolvl=difisolvl+10.^ncgetvar([prefix sdate '.nc'],'difintlvl').*mask;
     difdialvl=difdialvl+10.^ncgetvar([prefix sdate '.nc'],'difdialvl').*mask;
+    end
   end
 end
 
 templvl=templvl/n;
 salnlvl=salnlvl/n;
+if 0
 uvellvl=uvellvl/n;
 vvellvl=vvellvl/n;
 idlagelvl=idlagelvl/n;
 %difisolvl=difisolvl/n;
 %difdialvl=difdialvl/n;
+end
 
 
-save(['matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat'],'nx','ny','nz','depth','templvl','salnlvl','difdialvl','difisolvl','uvellvl','vvellvl')
+save(['matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat'],'nx','ny','nz','depth','templvl','salnlvl')
+%save(['matfiles/' expid '_timemean_' num2str(fyear) '_' num2str(lyear) '.mat'],'nx','ny','nz','depth','templvl','salnlvl','difdialvl','difisolvl','uvellvl','vvellvl')

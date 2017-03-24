@@ -20,7 +20,7 @@ properties
 %expid='NOIIA_T62_tn11_visbeckRi_steering'
 %expid='NOIIA_T62_tn11_sr10m60d_01'
 %expid='N1850_f19_tn11_01_default'
-%expid='NOIIA_T62_tn11_FAMOS_BG_NEG'
+%expid='NOIIA_T62_tn11_FAMOS_BG_CTR'
 %expid='NBF1850_f19_tn11_test_mis3b_fwf3'
 %expid='NBF1850_f19_tn11_test_mis3b'
 %expid='N1850_f19_tn11_gmnewdpu'
@@ -37,7 +37,7 @@ properties
 %expid='N1850C5OL45OCL32_30mar2016_f19_tn11'
 %expid='N1850_f19_tn11_SO_zero'
 
-%expid='NOIIA_T62_tn11_ctrl_default_02'
+%expid='NOIIA_T62_tn11_ctrl_default_02' % aleksi control
 %expid='NOIIA_T62_tn025_001'
 %expid='NOIIANCEP_T62_tn025_default_01'
 %expid='NOIIA_T62_tn025_default_visc01'
@@ -48,7 +48,8 @@ properties
 %expid='NBF1850_f19_tn11_difest'
 %expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV'
 %expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV_450'
-expid='NBF1850_f19_tn11_CCSM_CO2_PPMV_450'
+%expid='NBF1850_f19_tn11_CCSM_CO2_PPMV_450'
+expid='NOIIA_T62_tn11_drho01'
 
 %expid='NBF1850OC_f19_tn11_test_GM_02'
 %expid='NBF1850OC_f19_tn11_01'

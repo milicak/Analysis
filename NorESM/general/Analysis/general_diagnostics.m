@@ -5,14 +5,14 @@
 %root_folder='/hexagon/work/milicak/archive/';
 %root_folder='/hexagon/work/matsbn/archive/';
 
-root_folder='/hexagon/work/agu002/archive/';
+%root_folder='/hexagon/work/agu002/archive/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm_mehmet/';
 %root_folder='/hexagon/work/agu002/noresm/';
 
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases_test_Xmas2015/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
-%root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+root_folder='/fimm/work/milicak/mnt/viljework/archive/';
 %root_folder='/fimm/work/milicak/mnt/viljeworkalok/archive/';
 %root_folder='/hexagon/work/detivan/archive/';
 %root_folder='/hexagon/work/cgu025/archive/';
@@ -22,11 +22,11 @@ proj=projectname;
 expid=proj.expid
 
 fyear = 1; % first year
-lyear = 475; % last year
+lyear = 20; % last year
 
-m2y = 0; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
+m2y = 1; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
-onedegree = false;
+onedegree = true;
 low=true;
 %onedegree = false;
 %low=false;
@@ -35,10 +35,10 @@ if (tripolar)
   % tripolar 1degree grid
   if(onedegree)
     grid_file='/fimm/home/bjerknes/milicak/Analysis/NorESM/climatology/Analysis/grid.nc';
-    map_file2='/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/DATA/maps/map_noresm_tnx1v1_to_section.nc';
+    map_file2='/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/maps/map_noresm_tnx1v1_to_section.nc';
   else
   % tripolar 0.25degree grid
-  grid_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/grid_0_25degree.nc';
+  grid_file = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/maps/grid_0_25degree.nc';
 end
 else
 % bi-polar grid
@@ -47,12 +47,12 @@ end
 
 if (low)
   if(onedegree)
-     map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_tnx1v1_to_woa09_aave_20120501.nc'; %1 degree
+     map_file = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/maps/map_tnx1v1_to_woa09_aave_20120501.nc'; %1 degree
    else
-     map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_noresm_tnx0.25v1_to_woa09_1deg_aave_.nc'; %0.25 degree
+     map_file = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/maps/map_noresm_tnx0.25v1_to_woa09_1deg_aave_.nc'; %0.25 degree
    end
  else
-  map_file = '/bcmhsm/milicak/RUNS/noresm/CORE2/Arctic/maps/map_noresm_tnx0.25v1_to_woa09_0_25deg_aave_.nc'; %0.25 degree high resl
+  map_file = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/maps/map_noresm_tnx0.25v1_to_woa09_0_25deg_aave_.nc'; %0.25 degree high resl
 end
 
 global_EKE = false;
@@ -60,16 +60,16 @@ sshmean = false;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
-amoc_time = true;
+amoc_time = false;
 amoc_mean = false;
 kappaN2 = false;
 drake_tr = false;
-time_mean = false;
+time_mean = true;
 time_mean_mld = false;
 time_vertical_tracer = false;
 global_tracers = false;
 global_upwelling = false;
-global_surface = false;
+global_surface = true;
 global_zonalmean = false;
 global_depthbias = false;
 EminusP = false;
@@ -160,7 +160,7 @@ end
 
 % global time mean
 if(time_mean == true)
-  [templvl salnlvl difdialvl]=general_diagnostics_timemean(root_folder,expid,m2y,fyear,lyear,grid_file);
+  [templvl salnlvl]=general_diagnostics_timemean(root_folder,expid,m2y,fyear,lyear,grid_file);
 end
 
 % global time mean MLD
