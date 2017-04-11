@@ -20,7 +20,6 @@ properties
 %expid='NOIIA_T62_tn11_visbeckRi_steering'
 %expid='NOIIA_T62_tn11_sr10m60d_01'
 %expid='N1850_f19_tn11_01_default'
-%expid='NOIIA_T62_tn11_FAMOS_BG_CTR'
 %expid='NBF1850_f19_tn11_test_mis3b_fwf3'
 %expid='NBF1850_f19_tn11_test_mis3b'
 %expid='N1850_f19_tn11_gmnewdpu'
@@ -49,7 +48,12 @@ properties
 %expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV'
 %expid='NBF1850_f19_tn11_difest_CCSM_CO2_PPMV_450'
 %expid='NBF1850_f19_tn11_CCSM_CO2_PPMV_450'
-expid='NOIIA_T62_tn11_drho01'
+%expid='NOIIA_T62_tn11_drho02'
+%expid='NOIIA_T62_tn11_FAMOS_BG_CTR'
+
+expid='NOINY_T62_tn11_noresm2_RX10'
+%expid='NOINY_T62_tn11_noresm2_RVAR'
+%expid='NOINY_T62_tn11_noresm2_RX13'
 
 %expid='NBF1850OC_f19_tn11_test_GM_02'
 %expid='NBF1850OC_f19_tn11_01'
