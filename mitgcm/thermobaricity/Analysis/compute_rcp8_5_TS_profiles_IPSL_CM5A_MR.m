@@ -8,7 +8,7 @@ root_folder = '/work/milicak/mnt/SKDData/'
 varname1 = 'thetao';
 varname2 = 'so';
 
-project_name = 'CESM1-BGC'
+project_name = 'IPSL-CM5A-MR'
 
 rname = 'r1i1p1';
 
@@ -17,7 +17,7 @@ expid1 = 'historical'
 % rcp8.5
 expid2 = 'rcp85'
 
-years = '198001-198912.nc';
+years = '195001-199912.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -29,17 +29,9 @@ filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '199001-199912.nc';
-filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
-
 % time average
-temp = squeeze(nanmean(temp,4));
-salt = squeeze(nanmean(salt,4));
+temp = squeeze(nanmean(squeeze(temp(:,:,:,end-119:end)),4));
+salt = squeeze(nanmean(squeeze(salt(:,:,:,end-119:end)),4));
 
 in = insphpoly(lon,lat,lon_region1,lat_region1,0,90);  
 in = double(in);
@@ -53,7 +45,7 @@ saltctr = salt.*in;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-years = '208001-208912.nc';
+years = '205601-210012.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -62,17 +54,10 @@ filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '209001-209912.nc';
-filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
 
 % time average
-temp = squeeze(nanmean(temp,4));
-salt = squeeze(nanmean(salt,4));
+temp = squeeze(nanmean(squeeze(temp(:,:,:,end-119:end)),4));
+salt = squeeze(nanmean(squeeze(salt(:,:,:,end-119:end)),4));
 
 temprcp85 = temp.*in;
 saltrcp85 = salt.*in;

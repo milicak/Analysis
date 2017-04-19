@@ -8,7 +8,7 @@ root_folder = '/work/milicak/mnt/SKDData/'
 varname1 = 'thetao';
 varname2 = 'so';
 
-project_name = 'CESM1-BGC'
+project_name = 'CNRM-CM5'
 
 rname = 'r1i1p1';
 
@@ -53,7 +53,7 @@ saltctr = salt.*in;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-years = '208001-208912.nc';
+years = '208601-209512.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -62,7 +62,7 @@ filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '209001-209912.nc';
+years = '209601-210012.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp=cat(4,temp,ncread(filename,varname1));

@@ -8,7 +8,7 @@ root_folder = '/work/milicak/mnt/SKDData/'
 varname1 = 'thetao';
 varname2 = 'so';
 
-project_name = 'CESM1-BGC'
+project_name = 'GFDL-ESM2G'
 
 rname = 'r1i1p1';
 
@@ -17,7 +17,7 @@ expid1 = 'historical'
 % rcp8.5
 expid2 = 'rcp85'
 
-years = '198001-198912.nc';
+years = '198101-198512.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -29,7 +29,21 @@ filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '199001-199912.nc';
+years = '198601-199012.nc';
+filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
+temp=cat(4,temp,ncread(filename,varname1));
+filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
+salt=cat(4,salt,ncread(filename,varname2));
+years = '199101-199512.nc';
+filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
+temp=cat(4,temp,ncread(filename,varname1));
+filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
+salt=cat(4,salt,ncread(filename,varname2));
+years = '199601-200012.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp=cat(4,temp,ncread(filename,varname1));
@@ -53,7 +67,7 @@ saltctr = salt.*in;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-years = '208001-208912.nc';
+years = '208101-208512.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -62,7 +76,21 @@ filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '209001-209912.nc';
+years = '208601-209012.nc';
+filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
+temp=cat(4,temp,ncread(filename,varname1));
+filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
+salt=cat(4,salt,ncread(filename,varname2));
+years = '209101-209512.nc';
+filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
+temp=cat(4,temp,ncread(filename,varname1));
+filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/']; 
+filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
+salt=cat(4,salt,ncread(filename,varname2));
+years = '209601-210012.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp=cat(4,temp,ncread(filename,varname1));
