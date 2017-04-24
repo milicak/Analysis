@@ -36,6 +36,9 @@ j1 = 174;
 T1 = squeeze(temp(i1,j1,:));
 S1 = squeeze(salt(i1,j1,:));
 
+dTdz(2:33)=(T1(2:end)-T1(1:end-1))./(zr(2:end)-zr(1:end-1));
+dSdz(2:33)=(S1(2:end)-S1(1:end-1))./(zr(2:end)-zr(1:end-1));
+
 %additional warming
 % first working config
 %T1(12:20) = T1(12:20)+.5*exp(-(zr(12:20)-300)/300);

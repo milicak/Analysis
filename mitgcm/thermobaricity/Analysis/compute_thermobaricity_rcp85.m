@@ -3,15 +3,20 @@
 %California, USA and
 %Patrick C. Gallacher
 %NRL, Stennis Space Center, Mississippi, USA
-
 clear all
 
-%load('matfiles/CESM1-BGC_Arctic_rcp85.mat')
+ctrl = 1
+
+load('matfiles/CESM1-BGC_Arctic_rcp85.mat')
 %load('matfiles/NorESM1-M_Arctic_rcp85.mat')
 %load('matfiles/GFDL-ESM2M_Arctic_rcp85.mat')
 %load('matfiles/GFDL-ESM2G_Arctic_rcp85.mat')
-load('matfiles/IPSL-CM5A-MR_Arctic_rcp85.mat')
+%load('matfiles/IPSL-CM5A-MR_Arctic_rcp85.mat')
 pr = sw_pres(zr,84.5);
+
+% convert Kelvin to Celcius
+T1ctr = T1ctr - 273.15;
+T1rcp85 = T1rcp85 - 273.15;
 
 if(max(S1ctr(:)) < 1)
     S1ctr = S1ctr * 1000;
@@ -24,13 +29,18 @@ lat_region1 = [83.6591 84.0485 83.8828 82.8630 82.7320 82.2573 83.6591];
 href = 1000;
 indref = max(find(zr<=href));
 
-T1 = squeeze(nanmean(T1ctr,1));
-S1 = squeeze(nanmean(S1ctr,1));
-
+if ctrl==1
+% cntrl
+  T1 = squeeze(nanmean(T1ctr,1));
+  S1 = squeeze(nanmean(S1ctr,1));
+else
 % rcp 8.5
-%T1 = squeeze(nanmean(T1rcp85,1));
-%S1 = squeeze(nanmean(S1rcp85,1));
+  T1 = squeeze(nanmean(T1rcp85,1));
+  S1 = squeeze(nanmean(S1rcp85,1));
+end
 
+%convert potential temperature to conservative temperature to be used gsw
+T1 = gsw_CT_from_pt(S1,T1);
 
 rho = gsw_rho(S1,T1,pr);
 Tref = T1(indref);
@@ -64,7 +74,7 @@ alpha0_fit = P(2);
 alpha0 = -0.5*(alpha0+alpha0_fit);
 
 % from control alpha values
-if 1
+if 0
     alpha0 = -3.6307e-05;
     alpha1 = -2.8655e-08;
 end
