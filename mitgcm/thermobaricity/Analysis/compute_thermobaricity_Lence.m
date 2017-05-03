@@ -6,11 +6,12 @@
 
 clear all
 
-load /fimm/home/bjerknes/milicak/Analysis/NorESM/CORE2/Arctic/Analysis/m_files/matfiles/PHC_annual.mat
-lon = ncread('~/Analysis/NorESM/climatology/Analysis/t00an1.nc','lon');
-lat = ncread('~/Analysis/NorESM/climatology/Analysis/t00an1.nc','lat');
-zr = ncread('~/Analysis/NorESM/climatology/Analysis/t00an1.nc','depth');
-pr = sw_pres(zr,84.5);
+salt = ncread('n-ice2015_ship-ctd.nc','PSAL');
+temp = ncread('n-ice2015_ship-ctd.nc','TEMP');
+pr = ncread('n-ice2015_ship-ctd.nc','PRES');
+lon = ncread('n-ice2015_ship-ctd.nc','LONGITUDE');
+lat = ncread('n-ice2015_ship-ctd.nc','LATITUDE');
+zr = sw_dpth(pr,mean(lat));
 
 lon_s4=[17.6 16.5 16.05 15.6 15.1 14.1 13.0   12.0  10.0  8.0    4.0    4.0   10.0   20.0   30.0   40.0   50.0   60.0   70.0   80.0   90.0  100.0  110.0  120.0  130.0  140.0];
 lat_s4=[69   70.6 71.3  72.02 72.8 73.8 75.0   76.0 77.0  78.0   79.0   80.0   81.0   81.8   81.8   82.6   83.0   83.2   83.1   82.8   82.5   81.8   79.7   78.2   78.2   79.7];
@@ -19,30 +20,27 @@ lon_region1 = [28.4183 50.1650 61.7595 59.7147 41.6135 24.3184 28.4183];
 lat_region1 = [83.6591 84.0485 83.8828 82.8630 82.7320 82.2573 83.6591];
 
 href = 1000;
-indref = find(zr==href);
-% Canada Basin
-%i1 = 200;
-%j1 = 175;
-% Eurasia Basin
-i1 = 30;
-j1 = 176;
-% Along AW route
-%i1 = 61;
-%j1 = 174;
+indref = max(find(zr<=href));
 
 %mask = squeeze(temp(:,:,1));
 %mask(isnan(mask)==0)=0;
 %for i=1:360; for j=1:180
-T1 = squeeze(temp(i1,j1,:));
-S1 = squeeze(salt(i1,j1,:));
+T1 = squeeze(temp(:,6));
+S1 = squeeze(salt(:,6));
 
-dTdz(2:33)=(T1(2:end)-T1(1:end-1))./(zr(2:end)-zr(1:end-1));
-dSdz(2:33)=(S1(2:end)-S1(1:end-1))./(zr(2:end)-zr(1:end-1));
+S1(isnan(T1))=[];
+zr(isnan(T1))=[];
+pr(isnan(T1))=[];
+T1(isnan(T1))=[];
+
+
+dTdz(2:length(T1))=(T1(2:end)-T1(1:end-1))./(zr(2:end)-zr(1:end-1));
+dSdz(2:length(T1))=(S1(2:end)-S1(1:end-1))./(zr(2:end)-zr(1:end-1));
 
 %additional warming
 % first working config
-T1(12:20) = T1(12:20)+.5*exp(-(zr(12:20)-300)/300);
-S1(12:20) = S1(12:20)+.1*exp(-(zr(12:20)-300)/300);
+T1(300:1100) = T1(300:1100)+.5*exp(-(zr(300:1100)-300)/300);
+S1(300:1100) = S1(300:1100)+.1*exp(-(zr(300:1100)-300)/300);
 
 %T1(12:20) = T1(12:20)+1.0;
 %T1(12:end) = T1(12:end)+1.0;
