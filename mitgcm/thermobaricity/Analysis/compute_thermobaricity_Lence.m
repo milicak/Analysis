@@ -25,8 +25,14 @@ indref = max(find(zr<=href));
 %mask = squeeze(temp(:,:,1));
 %mask(isnan(mask)==0)=0;
 %for i=1:360; for j=1:180
-T1 = squeeze(temp(:,6));
-S1 = squeeze(salt(:,6));
+%T1 = squeeze(temp(:,2));
+%S1 = squeeze(salt(:,2));
+%T1 = squeeze(temp(:,6));
+%S1 = squeeze(salt(:,6));
+%T1 = squeeze(temp(:,12));
+%S1 = squeeze(salt(:,12));
+T1 = squeeze(temp(:,9));
+S1 = squeeze(salt(:,9));
 
 S1(isnan(T1))=[];
 zr(isnan(T1))=[];
@@ -37,10 +43,17 @@ T1(isnan(T1))=[];
 dTdz(2:length(T1))=(T1(2:end)-T1(1:end-1))./(zr(2:end)-zr(1:end-1));
 dSdz(2:length(T1))=(S1(2:end)-S1(1:end-1))./(zr(2:end)-zr(1:end-1));
 
+if 1
 %additional warming
 % first working config
-T1(300:1100) = T1(300:1100)+.5*exp(-(zr(300:1100)-300)/300);
-S1(300:1100) = S1(300:1100)+.1*exp(-(zr(300:1100)-300)/300);
+    ind1 = 300;
+    ind2 = 1100;
+    T1old = T1;
+    S1old = S1;
+    T1(ind1:ind2) = T1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+    S1(ind1:ind2) = S1(ind1:ind2)+.1*exp(-(zr(ind1:ind2)-ind1)/ind2);
+    %S1(300:1100) = S1(300:1100)+.1*exp(-(zr(300:1100)-300)/300);
+end
 
 %T1(12:20) = T1(12:20)+1.0;
 %T1(12:end) = T1(12:end)+1.0;
