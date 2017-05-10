@@ -19,7 +19,7 @@ switch title
         g=9.8;
         %deg2K=273.15;
         %W0=1*7.4; %m/s wind speed
-        Q0=500; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
+        Q0=250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
         %Tair0=-25+deg2K; % Air temperature Kelvin! Winter
         %Tair0=10+deg2K; % Air temperature Kelvin! Summer 
         %qair0=4e-4; %specific humidity from Kampf and Backhaus paper
@@ -29,14 +29,14 @@ switch title
 
         % Dimensions of grid in x y z
         nz = 3000;
-        nx = 3000;
+        nx = 256*16;
         ny = 1;
 
         % Nominal depth of model (meters)
         depth = H;
 
         % Size of domain in x direction
-        Lx = 3000; %10.24e3; %meter
+        Lx = nx; %10.24e3; %meter
         Ly = 1; %10.24e3; %meter
 
         %uniform delta_z
@@ -63,32 +63,54 @@ switch title
         [lon lat] = meshgrid(Lon,Lat);
         lon = lon';lat = lat';
 
-        % Initial ice salt
-        %saltice=10.0*ones([nx,ny]); % psu
-        saltice=36.359*ones([nx,ny]); % psu from Martin Losch email
-
         % bathymetry HAS TO BE NEGATIVE
-        d(1:nx,1:ny)=-depth;
+        d(1:nx,1:ny) = -depth;
 
         % surface heat flux is set to Q0
-        Q=Q0*ones([nx,ny]);
-        hflux=Q;
-        hflux(:,:,2)=hflux;
+        Q = Q0*ones([nx,ny]);
+        hflux = Q;
+        hflux(:,:,2) = hflux;
 
         % Create initial conditions for salt and temp
-        salt=zeros([nx,ny,nz]);
-        temp=zeros([nx,ny,nz]);
-        % Initial profile
-        salt(:,:,:)=Sref;
-        temp(:,:,:)=Tref;
+        salt = zeros([nx,ny,nz]);
+        temp = zeros([nx,ny,nz]);
 
         salt_lence = ncread('n-ice2015_ship-ctd.nc','PSAL');
         temp_lence = ncread('n-ice2015_ship-ctd.nc','TEMP');
+        pr_lence = ncread('n-ice2015_ship-ctd.nc','PRES');
         lat = ncread('n-ice2015_ship-ctd.nc','LATITUDE');
-        zr_lence = sw_dpth(pr,mean(lat));
+        zr_lence = sw_dpth(pr_lence,mean(lat));
+        pr = sw_pres(zr',mean(lat));
         T1 = squeeze(temp_lence(:,6));
         S1 = squeeze(salt_lence(:,6));
-        break
+        S1(isnan(T1)) = [];
+        zr_lence(isnan(T1)) = [];
+        T1(isnan(T1)) = [];
+        Tref = interp1(zr_lence,T1,zr);
+        Sref = interp1(zr_lence,S1,zr);
+        % remove NANs
+        ind = max(find(isnan(Tref)));
+        Tref(1:ind) = Tref(ind+1);
+        % remove NANs
+        ind = max(find(isnan(Sref)));
+        Sref(1:ind) = Sref(ind+1);
+        % apply smoothing filter of 5 points
+        Tref = my_nanfilter(Tref,40,'tri');
+        Sref = my_nanfilter(Sref,40,'tri');
+        % Initial profile
+        Sref = repmat(Sref,[ny 1 nx]);
+        Sref = permute(Sref,[3 1 2]); 
+        Tref = repmat(Tref,[ny 1 nx]);
+        Tref = permute(Tref,[3 1 2]); 
+        salt(:,:,:) = Sref;
+        temp(:,:,:) = Tref;
+
+        %add noise into temp between -0.001 and 0.001
+        randnoise = zeros(nx,ny,nz);
+        aa = 0.002*(1-rand(nx,ny,50));
+        randnoise(:,:,1:50) = aa;
+        temp = temp + randnoise;
+        %break
         
         %check salt(1,1,end) has to be bottom and the densiest
 

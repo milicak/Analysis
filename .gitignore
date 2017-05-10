@@ -1,5 +1,7 @@
 *.eps
 *.swp
+*.dat
+ferret*
 *.png
 *.mat
 *.nc

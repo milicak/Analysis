@@ -10,14 +10,14 @@ varname2 = 'so';
 
 project_name = 'CNRM-CM5'
 
-rname = 'r1i1p1';
+rname = 'r2i1p1';
 
 % historical
 expid1 = 'historical'
 % rcp8.5
 expid2 = 'rcp85'
 
-years = '198001-198912.nc';
+years = '199001-199912.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -28,14 +28,6 @@ zr = ncread(filename,'lev');
 filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 salt = ncread(filename,varname2);
-
-years = '199001-199912.nc';
-filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
 
 % time average
 temp = squeeze(nanmean(temp,4));
@@ -52,6 +44,7 @@ saltctr = salt.*in;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rname = 'r1i1p1';
 
 years = '208601-209512.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
