@@ -6,7 +6,14 @@ clear all
 
 project_name = ['thermobaricity']
 
-project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/input_exp1.0/'];
+project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/input_exp2.1/'];
+
+if ( exist(eval('project_name1'),'dir') ~=0 )
+    display('folder exist')
+else
+    mkdir(eval('project_name1'))
+    display('folder created')
+end
 
 prec = 'real*8';
 ieee = 'b';
@@ -19,7 +26,7 @@ switch title
         g=9.8;
         %deg2K=273.15;
         %W0=1*7.4; %m/s wind speed
-        Q0=250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
+        Q0=400; %250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
         %Tair0=-25+deg2K; % Air temperature Kelvin! Winter
         %Tair0=10+deg2K; % Air temperature Kelvin! Summer 
         %qair0=4e-4; %specific humidity from Kampf and Backhaus paper
@@ -97,6 +104,29 @@ switch title
         % apply smoothing filter of 5 points
         Tref = my_nanfilter(Tref,40,'tri');
         Sref = my_nanfilter(Sref,40,'tri');
+        Trefold = Tref;
+        Srefold = Sref;
+        for i=285:800
+            Tref(1,i)=Tref(285)+(i-285)*(Tref(800)-Tref(285))/(800-285);
+            Sref(1,i)=Sref(285)+(i-285)*(Sref(800)-Sref(285))/(800-285);
+        end
+        %break
+        save('matfiles/mitgcm_init_ctrl_TS.mat','Tref','Sref','zr')
+        %additional warming
+        if 1
+        % first working config
+            ind1 = 150; %1; %300;
+            ind2 = 700; %800; %1100;
+            ind3 = 1000;
+            Trefold2 = Tref;
+            Srefold2 = Sref;
+            Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            for i=ind2:ind3
+               Tref(i)=Tref(ind2)+(i-ind2)*(Tref(ind3)-Tref(ind2))/(ind3-ind2);        
+               Sref(i)=Sref(ind2)+(i-ind2)*(Sref(ind3)-Sref(ind2))/(ind3-ind2);        
+            end
+        end
         % Initial profile
         Sref = repmat(Sref,[ny 1 nx]);
         Sref = permute(Sref,[3 1 2]); 
@@ -107,8 +137,9 @@ switch title
 
         %add noise into temp between -0.001 and 0.001
         randnoise = zeros(nx,ny,nz);
-        aa = 0.002*(1-rand(nx,ny,50));
-        randnoise(:,:,1:50) = aa;
+        nzrand = 100;
+        aa = 0.002*(1-rand(nx,ny,nzrand));
+        randnoise(:,:,1:nzrand) = aa;
         temp = temp + randnoise;
         %break
         
