@@ -34,11 +34,11 @@ T1(isnan(T1))=[];
 dTdz(2:length(T1))=(T1(2:end)-T1(1:end-1))./(zr(2:end)-zr(1:end-1));
 dSdz(2:length(T1))=(S1(2:end)-S1(1:end-1))./(zr(2:end)-zr(1:end-1));
 
-if 1
+if 0
 %additional warming
 % first working config
     ind1 = 150; %1; %300;
-    ind2 = 700; %800; %1100;
+    ind2 = 670; %700; %800; %1100;
     ind3 = 1000;
     T1old = T1;
     S1old = S1;
@@ -50,6 +50,33 @@ if 1
        S1(i)=S1(ind2)+(i-ind2)*(S1(ind3)-S1(ind2))/(ind3-ind2);        
     end
 end
+        if 1
+        % first working config
+            ind0 = 100; %1; %300;
+            ind1 = 150; %1; %300;
+            ind2 = 470; %670; %700; %800; %1100;
+            ind3 = 1000;
+            T1old = T1;
+            S1old = S1;
+            T1(ind1:ind2) = T1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            S1(ind1:ind2) = S1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %T1(ind1:ind2) = T1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %S1(ind1:ind2) = S1(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            for i=ind2:ind3
+               T1(i)=T1(ind2)+(i-ind2)*(T1(ind3)-T1(ind2))/(ind3-ind2);        
+               S1(i)=S1(ind2)+(i-ind2)*(S1(ind3)-S1(ind2))/(ind3-ind2);        
+            end
+            for i=ind0:ind1
+               T1(i)=T1(ind0)+(i-ind0)*(T1(ind1)-T1(ind0))/(ind1-ind0);        
+               S1(i)=S1(ind0)+(i-ind0)*(S1(ind1)-S1(ind0))/(ind1-ind0);        
+            end
+            %break
+            alp0=2.15e-5;
+            rh0=1027*(-alp0'.*(T1-10)+8e-4*(S1-32));
+            alp1=2.65e-5+5.2e-8*pr;
+            %alp1=2.65e-5+2.97e-8*pr;
+            rh1=1027*(-alp1.*(T1-10)+8e-4*(S1-32));
+        end
 
 rho = gsw_rho(S1,T1,pr);
 Tref = T1(indref);

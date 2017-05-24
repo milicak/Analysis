@@ -6,7 +6,7 @@ clear all
 
 project_name = ['thermobaricity']
 
-project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/input_exp2.1/'];
+project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/input_exp2.3/'];
 
 if ( exist(eval('project_name1'),'dir') ~=0 )
     display('folder exist')
@@ -26,7 +26,7 @@ switch title
         g=9.8;
         %deg2K=273.15;
         %W0=1*7.4; %m/s wind speed
-        Q0=400; %250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
+        Q0=250; %400; %250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
         %Tair0=-25+deg2K; % Air temperature Kelvin! Winter
         %Tair0=10+deg2K; % Air temperature Kelvin! Summer 
         %qair0=4e-4; %specific humidity from Kampf and Backhaus paper
@@ -115,18 +115,34 @@ switch title
         %additional warming
         if 1
         % first working config
-            ind1 = 150; %1; %300;
-            ind2 = 700; %800; %1100;
+            ind0 = 90; %100; %1; %300;
+            ind1 = 91; % 150; %1; %300;
+            ind2 = 470; %670; %700; %800; %1100;
             ind3 = 1000;
             Trefold2 = Tref;
             Srefold2 = Sref;
-            Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            Sref(ind1:ind2) = Sref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Sref(ind1:ind2) = Sref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
             for i=ind2:ind3
                Tref(i)=Tref(ind2)+(i-ind2)*(Tref(ind3)-Tref(ind2))/(ind3-ind2);        
                Sref(i)=Sref(ind2)+(i-ind2)*(Sref(ind3)-Sref(ind2))/(ind3-ind2);        
             end
+            for i=ind0:ind1
+               Tref(i)=Tref(ind0)+(i-ind0)*(Tref(ind1)-Tref(ind0))/(ind1-ind0);        
+               Sref(i)=Sref(ind0)+(i-ind0)*(Sref(ind1)-Sref(ind0))/(ind1-ind0);        
+            end
+            rhmdjwf=densmdjwf(Sref',Tref',pr)-1030;
+            alp0=2.15e-5;
+            rh0=1027*(-alp0'.*(Tref-10)+8e-4*(Sref-32));
+            alp1=2.65e-5+2.97e-8*pr;
+            rh1=1027*(-alp1'.*(Tref-10)+8e-4*(Sref-32));
+            break
         end
+        %break
         % Initial profile
         Sref = repmat(Sref,[ny 1 nx]);
         Sref = permute(Sref,[3 1 2]); 
@@ -140,7 +156,9 @@ switch title
         nzrand = 100;
         aa = 0.002*(1-rand(nx,ny,nzrand));
         randnoise(:,:,1:nzrand) = aa;
-        temp = temp + randnoise;
+        %temp = temp + randnoise;
+        Qrandnoise = 2*(0.5-rand(nx,ny));
+        %Q = Q + Qrandnoise;
         %break
         
         %check salt(1,1,end) has to be bottom and the densiest
