@@ -5,8 +5,9 @@ clear all
 %close all
 
 project_name = ['thermobaricity']
+expid = 'input_exp1.0'
 
-project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/input_exp2.6/'];
+project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/' expid '/'];
 
 if ( exist(eval('project_name1'),'dir') ~=0 )
     display('folder exist')
@@ -26,7 +27,7 @@ switch title
         g=9.8;
         %deg2K=273.15;
         %W0=1*7.4; %m/s wind speed
-        Q0=0; %400; %250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
+        Q0=250; %400; %250; % Watts/m2 ; positive for cooling (dense water) ; negative for warming
         %Tair0=-25+deg2K; % Air temperature Kelvin! Winter
         %Tair0=10+deg2K; % Air temperature Kelvin! Summer 
         %qair0=4e-4; %specific humidity from Kampf and Backhaus paper
@@ -106,12 +107,15 @@ switch title
         Sref = my_nanfilter(Sref,40,'tri');
         Trefold = Tref;
         Srefold = Sref;
+        Tref(1:110) = Tref(1);
+        Sref(1:110) = Sref(1);
+        %break
         for i=285:800
             Tref(1,i)=Tref(285)+(i-285)*(Tref(800)-Tref(285))/(800-285);
             Sref(1,i)=Sref(285)+(i-285)*(Sref(800)-Sref(285))/(800-285);
         end
         %break
-        save('matfiles/mitgcm_init_ctrl_TS.mat','Tref','Sref','zr')
+        save(['matfiles/mitgcm_init_ctrl_TS' expid '.mat'],'Tref','Sref','zr')
         %additional warming
         if 1
         % first working config
@@ -135,6 +139,8 @@ switch title
                Tref(i)=Tref(ind0)+(i-ind0)*(Tref(ind1)-Tref(ind0))/(ind1-ind0);        
                Sref(i)=Sref(ind0)+(i-ind0)*(Sref(ind1)-Sref(ind0))/(ind1-ind0);        
             end
+            Tref(1:110) = Tref(1);
+            Sref(1:110) = Sref(1);
             rhmdjwf=densmdjwf(Sref',Tref',pr)-1030;
             alp0=2.15e-5;
             rh0=1027*(-alp0'.*(Tref-10)+8e-4*(Sref-32));
@@ -153,11 +159,11 @@ switch title
 
         %add noise into temp between -0.001 and 0.001
         randnoise = zeros(nx,ny,nz);
-        nzrand = 100;
-        aa = 0.002*(1-rand(nx,ny,nzrand));
+        nzrand = 50;
+        aa = 0.001*(1-rand(nx,ny,nzrand));
         randnoise(:,:,1:nzrand) = aa;
-        %temp = temp + randnoise;
-        Qrandnoise = 2*(0.5-rand(nx,ny));
+        temp = temp + randnoise;
+        %Qrandnoise = 2*(0.5-rand(nx,ny));
         %Q = Q + Qrandnoise;
         %break
         
