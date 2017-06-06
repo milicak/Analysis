@@ -12,18 +12,18 @@
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases_test_Xmas2015/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
-%root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+root_folder='/fimm/work/milicak/mnt/viljework/archive/';
 %root_folder='/fimm/work/milicak/mnt/viljeworkalok/archive/';
 %root_folder='/hexagon/work/detivan/archive/';
 %root_folder='/hexagon/work/cgu025/archive/';
-root_folder='/fimm/work/milicak/mnt/SKDData/ela066/';
+%root_folder='/fimm/work/milicak/mnt/SKDData/ela066/';
 
 clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 401; % first year
-lyear = 450; % last year
+fyear = 1; % first year
+lyear = 248; % last year
 
 m2y = 1; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;

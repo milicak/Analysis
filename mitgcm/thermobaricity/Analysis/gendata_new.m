@@ -5,7 +5,7 @@ clear all
 %close all
 
 project_name = ['thermobaricity']
-expid = 'input_exp1.0'
+expid = 'input_exp1.3'
 
 project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/' expid '/'];
 
@@ -76,6 +76,7 @@ switch title
 
         % surface heat flux is set to Q0
         Q = Q0*ones([nx,ny]);
+        Qzero = 0*ones([nx,ny]);
         hflux = Q;
         hflux(:,:,2) = hflux;
 
@@ -125,12 +126,12 @@ switch title
             ind3 = 1000;
             Trefold2 = Tref;
             Srefold2 = Sref;
-            Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            Sref(ind1:ind2) = Sref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Sref(ind1:ind2) = Sref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %Sref(ind1:ind2) = Sref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            %Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            %Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
             for i=ind2:ind3
                Tref(i)=Tref(ind2)+(i-ind2)*(Tref(ind3)-Tref(ind2))/(ind3-ind2);        
                Sref(i)=Sref(ind2)+(i-ind2)*(Sref(ind3)-Sref(ind2))/(ind3-ind2);        
@@ -208,4 +209,5 @@ fid=fopen([project_name1 'S.init'],'w',ieee); fwrite(fid,salt,prec); fclose(fid)
 fid=fopen([project_name1 'T.init'],'w',ieee); fwrite(fid,temp,prec); fclose(fid);
 %fid=fopen([project_name1 'U.init'],'w',ieee); fwrite(fid,u,prec); fclose(fid);
 fid=fopen([project_name1 'Qnet.forcing'],'w',ieee); fwrite(fid,Q,prec); fclose(fid);
+fid=fopen([project_name1 'Qnetzero.forcing'],'w',ieee); fwrite(fid,Qzero,prec); fclose(fid);
 

@@ -9,6 +9,12 @@ if(topo_file=='etopo5.nc')
     topo_lon=ncgetvar(topo_file,'topo_lon');
     topo_lat=ncgetvar(topo_file,'topo_lat');
     topo=ncgetvar(topo_file,'topo');
+    dnm = topo_lon(2162:end);
+    topo_lon(2160:end)=topo_lon(1:2161);
+    topo_lon(1:2159)=dnm;    
+    dnm = topo(2162:end,:);
+    topo(2160:end,:)=topo(1:2161,:);
+    topo(1:2159,:)=dnm;    
 elseif(topo_file=='etopo2.nc')
     dy_deg2km=deg2km(2/60);  % because it is etopo2;
     topo_lon=ncgetvar(topo_file,'X_P1DEGREE');
@@ -57,6 +63,11 @@ for j=2:Ny
 end
 end
 topo_dy(:,1)==(topo(:,2)-topo(:,1))./(dy(:,1)*1e3);
+
+
+%reverse sign to make compatible with Holloway formulation
+topo_dx = -topo_dx;
+topo_dy = -topo_dy;
 
 plon=ncgetvar(grid_file,'plon');
 plat=ncgetvar(grid_file,'plat');

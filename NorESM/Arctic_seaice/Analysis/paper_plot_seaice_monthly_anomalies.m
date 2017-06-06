@@ -24,6 +24,9 @@ legendnames = [ {'HadISST'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
 
 regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'Labrador'} {'Eurasian'} {'Bering'}];
 
+months = [{'Jan'} {'Feb'} {'Mar'} {'Apr'} {'May'} {'June'} {'July'} {'Aug'} ...
+{'Sep'} {'Oct'} {'Nov'} {'Dec'}];
+
 time = 1:1:12;
 scale = 1e-12; %10^6 km^2
 ice_ext_regions_mean = containers.Map;
@@ -59,6 +62,8 @@ for i=1:length(regionnames)
     tmp = nanmean(tmp,2);
     plot(time,(tmp-mean(tmp))*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
         ,'linewidth',2,'DisplayName',char(legendnames(j)));
+    printname = ['paperfigs/' char(regionnames(i)) '_seaice_month_anomalies.eps']
+    print(i,'-depsc2',printname)
 %keyboard
 end
 

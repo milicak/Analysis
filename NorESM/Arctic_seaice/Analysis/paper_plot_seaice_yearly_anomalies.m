@@ -41,7 +41,7 @@ for i=1:length(regionnames)
             ,'linewidth',2,'DisplayName',char(legendnames(j)));
     end
     legend(gca,'show','Location','EastOutside')
-    %ylabel('MMM total heat transport [TW]')                                         
+    ylabel('Annual ice extent anomalies [10^6 km^2]')                                         
     xlabel('time [years]')                                                          
     xlim([1979 2007])
     set(gca,'Box','on')                                                             
@@ -56,6 +56,9 @@ for i=1:length(regionnames)
     tmp = nanmean(tmp,1);
     plot(time,(tmp-mean(tmp))*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
         ,'linewidth',2,'DisplayName',char(legendnames(j)));
-%keyboard
+    printname = ['paperfigs/' char(regionnames(i)) '_seaice_anomalies.eps']
+    print(i,'-depsc2',printname)
+    %close
+    %keyboard
 end
 
