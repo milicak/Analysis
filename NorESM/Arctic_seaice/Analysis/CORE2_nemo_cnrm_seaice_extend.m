@@ -89,6 +89,5 @@ tmp = ice.*mask.*area;
 tmp = squeeze(nansum(tmp,1));
 tmp = squeeze(nansum(tmp,1));
 ice_ext_regions(regionnames{i}) = tmp;
-break
 savename = ['matfiles/' modelname '_ice_extentions.mat'];
 save(savename,'ice_ext_regions')

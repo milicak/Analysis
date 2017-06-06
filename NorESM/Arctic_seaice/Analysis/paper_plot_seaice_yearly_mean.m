@@ -19,6 +19,7 @@ expnames = [ {'seaice_obs_Had_ISST'} {'NorESM'} {'ncar-pop'} {'gfdl-gold'} {'gfd
 legendnames = [ {'HadISST'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
              {'CERFACS'} {'CNRM'}];
 
+
 regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} ...
 {'Labrador'} {'Eurasian'} {'Bering'} {'Chukchi'} {'EastSiber'} {'Canadanew'} {'Arctic'}];
 
@@ -38,11 +39,11 @@ for i=1:length(regionnames)
         tmp = nanmean(tmp,1);
         fname = [char(expnames(j)) '_' char(regionnames(i))];
         ice_ext_regions_mean(fname) = mean(tmp);
-        plot(time,(tmp-mean(tmp))*scale,'color',[color(j,1) color(j,2) color(j,3)] ...
+        plot(time,(tmp)*scale,'color',[color(j,1) color(j,2) color(j,3)] ...
             ,'linewidth',2,'DisplayName',char(legendnames(j)));
     end
     legend(gca,'show','Location','EastOutside')
-    ylabel('Annual ice extent anomalies [10^6 km^2]')                                         
+    ylabel('Annual ice extent [10^6 km^2]')                                         
     xlabel('time [years]')                                                          
     xlim([1979 2007])
     set(gca,'Box','on')                                                             
@@ -55,9 +56,9 @@ for i=1:length(regionnames)
     tmp(isnan(tmp)) = 0;
     tmp = reshape(tmp,[12 29]);
     tmp = nanmean(tmp,1);
-    plot(time,(tmp-mean(tmp))*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
+    plot(time,(tmp)*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
         ,'linewidth',2,'DisplayName',char(legendnames(j)));
-    printname = ['paperfigs/' char(regionnames(i)) '_seaice_anomalies.eps']
+    printname = ['paperfigs/' char(regionnames(i)) '_seaice_mean.eps']
     print(i,'-depsc2',printname)
     %close
     %keyboard

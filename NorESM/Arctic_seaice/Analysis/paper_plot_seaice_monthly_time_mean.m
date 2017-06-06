@@ -49,7 +49,7 @@ for indmonth=1:length(months)
             %tmp = tmp(:);
             fname = [char(expnames(j)) '_' char(regionnames(i))];
             ice_ext_regions_mean(fname) = mean(tmp);
-            plot(time,(tmp-mean(tmp))*scale,'color',[color(j,1) color(j,2) color(j,3)] ...
+            plot(time,(tmp)*scale,'color',[color(j,1) color(j,2) color(j,3)] ...
                 ,'linewidth',2,'DisplayName',char(legendnames(j)));
         end
         legend(gca,'show','Location','EastOutside')
@@ -68,9 +68,9 @@ for indmonth=1:length(months)
         %tmp = nanmean(tmp,2);
         %tmp = tmp(:);
         tmp = tmp(indmonth,:);
-        plot(time,(tmp-mean(tmp))*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
+        plot(time,(tmp)*scale,'color',[color(1,1) color(1,2) color(1,3)] ...
             ,'linewidth',2,'DisplayName',char(legendnames(j)));
-        printname = ['paperfigs/' char(regionnames(i)) '_seaice_' char(months(indmonth)) '_anomalies.eps']
+        printname = ['paperfigs/' char(regionnames(i)) '_seaice_' char(months(indmonth)) '_mean.eps']
         print(i,'-depsc2',printname)
     end
     %keyboard

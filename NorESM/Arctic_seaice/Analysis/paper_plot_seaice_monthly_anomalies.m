@@ -22,7 +22,8 @@ expnames = [ {'seaice_obs_Had_ISST'} {'NorESM'} {'ncar-pop'} {'gfdl-gold'} {'gfd
 legendnames = [ {'HadISST'} {'Bergen'} {'NCAR'} {'GFDL-GOLD'} {'GFDL-MOM'} ...
              {'CERFACS'} {'CNRM'}];
 
-regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} {'Labrador'} {'Eurasian'} {'Bering'}];
+regionnames = [{'KaraBarents'} {'Greenland'} {'Hudson'} {'CAA'} {'Canadian'} ...
+{'Labrador'} {'Eurasian'} {'Bering'} {'Chukchi'} {'EastSiber'} {'Canadanew'} {'Arctic'}];
 
 months = [{'Jan'} {'Feb'} {'Mar'} {'Apr'} {'May'} {'June'} {'July'} {'Aug'} ...
 {'Sep'} {'Oct'} {'Nov'} {'Dec'}];
