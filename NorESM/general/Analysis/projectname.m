@@ -50,7 +50,8 @@ properties
 %expid='NBF1850_f19_tn11_CCSM_CO2_PPMV_450'
 %expid='NOIIA_T62_tn11_drho06'
 %expid='NOIIA_T62_tn11_FAMOS_BG_CTR'
-expid = 'NOIIA_T62_tn11_ctrl_srxbal'
+%expid = 'NOIIA_T62_tn11_ctrl_srxbal'
+expid = 'NOIIA_T62_tn11_ctrl_srxbal_jorg_4km'
 
 %expid='NOINY_T62_tn11_noresm2_RX10'
 %expid='NOINY_T62_tn11_noresm2_RVAR'

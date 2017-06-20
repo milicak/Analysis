@@ -1,7 +1,10 @@
 clear all
 
-lon_region1 = [28.4183 50.1650 61.7595 59.7147 41.6135 24.3184 28.4183];
-lat_region1 = [83.6591 84.0485 83.8828 82.8630 82.7320 82.2573 83.6591];
+%lon_region1 = [28.4183 50.1650 61.7595 59.7147 41.6135 24.3184 28.4183];
+%lat_region1 = [83.6591 84.0485 83.8828 82.8630 82.7320 82.2573 83.6591];
+%lence drift profile locations;
+lon_region1 = [ 0.7632    8.1791   14.5322   21.6440   26.3827   24.2668 17.4635    8.0796    4.0217    0.7632]; 
+lat_region1 = [81.0571   82.7292   83.5158   83.5447   82.5843   81.2011 80.8200   79.2105   79.1073   81.0571];
 
 root_folder = '/work/milicak/mnt/SKDData/'
 
@@ -110,5 +113,6 @@ T1ctr(T1ctr==0)=NaN;
 S1ctr(S1ctr==0)=NaN;
 S1rcp85(S1rcp85==0)=NaN;
 
-save(['matfiles/' project_name '_Arctic_rcp85.mat'],'S1ctr','S1rcp85','T1ctr','T1rcp85','zr')
+%save(['matfiles/' project_name '_Arctic_rcp85.mat'],'S1ctr','S1rcp85','T1ctr','T1rcp85','zr')
+save(['matfiles/' project_name '_Arctic_rcp85_Lence.mat'],'S1ctr','S1rcp85','T1ctr','T1rcp85','zr')
 

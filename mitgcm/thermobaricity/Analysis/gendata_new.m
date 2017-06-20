@@ -5,7 +5,7 @@ clear all
 %close all
 
 project_name = ['thermobaricity']
-expid = 'input_exp1.3'
+expid = 'input_exp2.0'
 
 project_name1 = ['/work/milicak/RUNS/mitgcm/' project_name '/' expid '/'];
 
@@ -130,8 +130,11 @@ switch title
             %Sref(ind1:ind2) = Sref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %Tref(ind1:ind2) = Tref(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %Sref(ind1:ind2) = Sref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Tref(ind1:ind2) = Tref(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %Sref(ind1:ind2) = Sref(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            % remove startification from mixed layer
+            %Tref(1:110) = Tref(1);
+            %Sref(1:110) = Sref(1);
             for i=ind2:ind3
                Tref(i)=Tref(ind2)+(i-ind2)*(Tref(ind3)-Tref(ind2))/(ind3-ind2);        
                Sref(i)=Sref(ind2)+(i-ind2)*(Sref(ind3)-Sref(ind2))/(ind3-ind2);        
@@ -140,8 +143,6 @@ switch title
                Tref(i)=Tref(ind0)+(i-ind0)*(Tref(ind1)-Tref(ind0))/(ind1-ind0);        
                Sref(i)=Sref(ind0)+(i-ind0)*(Sref(ind1)-Sref(ind0))/(ind1-ind0);        
             end
-            Tref(1:110) = Tref(1);
-            Sref(1:110) = Sref(1);
             rhmdjwf=densmdjwf(Sref',Tref',pr)-1030;
             alp0=2.15e-5;
             rh0=1027*(-alp0'.*(Tref-10)+8e-4*(Sref-32));
