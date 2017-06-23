@@ -31,6 +31,7 @@ for j=1:length(expnames)
         plot(Tini,zref','color',[color(j,1) color(j,2) color(j,3)] ...
         ,'linewidth',2,'DisplayName',char(regionnames(j)));
     end
+    save(['matfiles/mitgcm_' char(expnames(j)) 'ini_temp_profiles.mat'],'Tini','zref')
     %keyboard
 end
 legend(gca,'show','Location','Southeast')
@@ -49,6 +50,7 @@ for j=1:length(expnames)
     plot(Sini,zref','color',[color(j,1) color(j,2) color(j,3)] ...
         ,'linewidth',2,'DisplayName',char(regionnames(j)));
     %keyboard
+    save(['matfiles/mitgcm_' char(expnames(j)) 'ini_salt_profiles.mat'],'Sini','zref')
 end
 legend(gca,'show','Location','Southeast')
 ylabel('Depth [m]')                                         

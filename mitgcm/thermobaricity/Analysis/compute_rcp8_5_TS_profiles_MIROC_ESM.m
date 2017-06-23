@@ -11,7 +11,7 @@ root_folder = '/work/milicak/mnt/SKDData/'
 varname1 = 'thetao';
 varname2 = 'so';
 
-project_name = 'GFDL-ESM2M'
+project_name = 'MIROC-ESM'
 
 rname = 'r1i1p1';
 
@@ -20,7 +20,7 @@ expid1 = 'historical'
 % rcp8.5
 expid2 = 'rcp85'
 
-years = '198101-198512.nc';
+years = '198001-198912.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -32,21 +32,7 @@ filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '198601-199012.nc';
-filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
-years = '199101-199512.nc';
-filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid1 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid1 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
-years = '199601-200012.nc';
+years = '199001-199912.nc';
 filename = [root_folder expid1 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid1 '_' rname '_' years];
 temp=cat(4,temp,ncread(filename,varname1));
@@ -58,7 +44,8 @@ salt=cat(4,salt,ncread(filename,varname2));
 temp = squeeze(nanmean(temp,4));
 salt = squeeze(nanmean(salt,4));
 
-in = insphpoly(lon,lat,lon_region1,lat_region1,0,90);  
+[lon lat]=meshgrid(lon,lat);
+in = insphpoly(lon',lat',lon_region1,lat_region1,0,90);  
 in = double(in);
 in = repmat(in,[1 1 size(temp,3)]);
 
@@ -70,7 +57,7 @@ saltctr = salt.*in;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-years = '208101-208512.nc';
+years = '208601-209512.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 temp = ncread(filename,varname1);
@@ -79,20 +66,6 @@ filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/'];
 filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
 salt = ncread(filename,varname2);
 
-years = '208601-209012.nc';
-filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
-years = '209101-209512.nc';
-filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-temp=cat(4,temp,ncread(filename,varname1));
-filename = [root_folder expid2 '/' varname2 '/mon/' project_name '/' rname '/']; 
-filename = [filename varname2 '_Omon_' project_name '_' expid2 '_' rname '_' years];
-salt=cat(4,salt,ncread(filename,varname2));
 years = '209601-210012.nc';
 filename = [root_folder expid2 '/' varname1 '/mon/' project_name '/' rname '/']; 
 filename = [filename varname1 '_Omon_' project_name '_' expid2 '_' rname '_' years];
@@ -112,7 +85,6 @@ tempctr= reshape(tempctr,[size(tempctr,1)*size(tempctr,2) size(tempctr,3)]);
 temprcp85 = reshape(temprcp85,[size(temprcp85,1)*size(temprcp85,2) size(temprcp85,3)]);
 saltctr= reshape(saltctr,[size(saltctr,1)*size(saltctr,2) size(saltctr,3)]);
 saltrcp85 = reshape(saltrcp85,[size(saltrcp85,1)*size(saltrcp85,2) size(saltrcp85,3)]);
-break
 
 tempctr(isnan(tempctr))=0;
 saltctr(isnan(saltctr))=0;

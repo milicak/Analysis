@@ -1,6 +1,6 @@
 clear all
 
-rcp=0;
+rcp=1;
 
 if rcp==1
 % RCP8.5 case
@@ -26,10 +26,14 @@ hold on
 plot(Fwt'+(TrBe+TrCAA),'r')
 plot(TrSec+Fwt'+(TrBe+TrCAA),'k')
 
+K2C = 273.15;
 % heat balance
-dnm1=squeeze(nansum(trsec.*tempsec,3));dnm1=squeeze(nansum(dnm1,2));     
-dnm2=squeeze(nansum(trCAA.*tempCAA,3));dnm2=squeeze(nansum(dnm2,2));      
-dnm3=squeeze(nansum(trBe.*tempBe,3));dnm3=squeeze(nansum(dnm3,2));      
+%dnm1=squeeze(nansum(trsec.*tempsec,3));dnm1=squeeze(nansum(dnm1,2));     
+%dnm2=squeeze(nansum(trCAA.*tempCAA,3));dnm2=squeeze(nansum(dnm2,2));      
+%dnm3=squeeze(nansum(trBe.*tempBe,3));dnm3=squeeze(nansum(dnm3,2));      
+dnm1=squeeze(nansum(trsec.*(tempsec-K2C),3));dnm1=squeeze(nansum(dnm1,2));      
+dnm2=squeeze(nansum(trCAA.*(tempCAA-K2C),3));dnm2=squeeze(nansum(dnm2,2));      
+dnm3=squeeze(nansum(trBe.*(tempBe-K2C),3));dnm3=squeeze(nansum(dnm3,2));
 
 HTrSec=dnm1;
 HTrCAA=dnm2;

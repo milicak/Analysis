@@ -58,8 +58,12 @@ end
             ind3 = 1000;
             T1old = T1;
             S1old = S1;
-            T1(ind1:ind2) = T1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
-            S1(ind1:ind2) = S1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            T1(ind1:ind2) = T1(ind1:ind2)+3.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            S1(ind1:ind2) = S1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %T1(ind1:ind2) = T1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %S1(ind1:ind2) = S1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %T1(ind1:ind2) = T1(ind1:ind2)+1.0*exp(-(zr(ind1:ind2)-ind1)/ind2);
+            %S1(ind1:ind2) = S1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %T1(ind1:ind2) = T1(ind1:ind2)+.5*exp(-(zr(ind1:ind2)-ind1)/ind2);
             %S1(ind1:ind2) = S1(ind1:ind2)+.2*exp(-(zr(ind1:ind2)-ind1)/ind2);
             for i=ind2:ind3
@@ -94,7 +98,7 @@ DeltaT1 = Tmxl-Tref;
 DeltaT2 = Tref-Tmax;
 DeltaS2 = Sref-Smax;
 beta = gsw_beta(S1(1),T1(1),0);
-alpha0 = gsw_alpha(S1(1),T1(1),0);
+alpha0_gsw = gsw_alpha(S1(1),T1(1),0);
 alpha_tmp = gsw_alpha(S1,T1,pr);
 zrtmp = zr;
 zrtmp(isnan(alpha_tmp))=[];
@@ -106,7 +110,7 @@ alpha1 = -P(1);
 % another version of alpha0
 alpha0_fit = P(2);
 %alpha0 = -alpha0_fit;
-alpha0 = -0.5*(alpha0+alpha0_fit);
+alpha0 = -0.5*(alpha0_gsw+alpha0_fit);
 
 % from control alpha values
 if 1

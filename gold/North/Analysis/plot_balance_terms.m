@@ -1,6 +1,7 @@
 clear all
-C2K=273.15;
-rcp=0;
+C2K=0;
+%C2K=273.15;
+rcp=1;
 
 if rcp==1
 % RCP8.5 case
