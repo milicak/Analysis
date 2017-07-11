@@ -2,12 +2,13 @@ clear all
 Cp=3985; %specific heat ratio m^2/(s^2*C)
 rho0=1035; %
 
-rcp8_5 = 2; %if rcp or control is processed
+rcp8_5 = 1; %if rcp or control is processed
 
 if rcp8_5 == 1
   % RCP 8.5
-  folder_name = '/archive/esm2m/fre/postriga_esm_20110506/ESM2M/ESM2M-HC2_2006-2100_all_rcp85_ZC2/gfdl.default-prod/pp/ocean/ts/annual/95yr/'
-  savename = 'matfiles/ESM2M_rcp8_5_heatflux';
+  %folder_name = '/archive/esm2m/fre/postriga_esm_20110506/ESM2M/ESM2M-HC2_2006-2100_all_rcp85_ZC2/gfdl.default-prod/pp/ocean/ts/annual/95yr/'
+  folder_name = '/work/milicak/RUNS/mom/'
+  savename = 'matfiles/ESM2M_rcp8_5_heatfluxv2';
   fyear = 2006;
   lyear = 2100;
 elseif rcp8_5 ==0
@@ -24,7 +25,8 @@ elseif rcp8_5 == 2
   lyear = 2005;
 end
 
-gridfile = '/archive/esm2m/fre/postriga_esm_20110506/ESM2M/ESM2M_pi-control_C2/gfdl.default-prod/pp/ocean/ocean.static.nc';
+%gridfile = '/archive/esm2m/fre/postriga_esm_20110506/ESM2M/ESM2M_pi-control_C2/gfdl.default-prod/pp/ocean/ocean.static.nc';
+gridfile = '/work/milicak/RUNS/mom/ocean.static.nc';
 mask = nc_varget(gridfile,'ht');
 mask(isnan(mask)==0)=1;
 %mask = nc_varget(gridfile,'wet');
@@ -141,6 +143,7 @@ for i=1:length(lyear)
   
   filename_LW = [folder_name 'ocean.' fy '-' ly '.lw_heat.nc'];
   filename_SW = [folder_name 'ocean.' fy '-' ly '.sw_heat.nc'];
+  filename_sw = [folder_name 'ocean.' fy '-' ly '.swflx.nc'];
   filename_lh = [folder_name 'ocean.' fy '-' ly '.evap_heat.nc'];
   filename_sh = [folder_name 'ocean.' fy '-' ly '.sens_heat.nc'];
   filename_calv = [folder_name 'ocean.' fy '-' ly '.calving_melt_heat.nc'];
@@ -148,20 +151,51 @@ for i=1:length(lyear)
 
   LW = nc_varget(filename_LW,'lw_heat');
   SW = nc_varget(filename_SW,'sw_heat');
+  sw = nc_varget(filename_sw,'swflx');
   lh = nc_varget(filename_lh,'evap_heat');
   sh = nc_varget(filename_sh,'sens_heat');
   calv = nc_varget(filename_calv,'calving_melt_heat');
   freeze = nc_varget(filename_freeze,'fprec_melt_heat');
-
+  if i==1
+      dz = ncread(filename_SW,'st_edges_ocean');
+      dz = dz(2:end)-dz(1:end-1);
+      dz = repmat(dz,[1 size(SW,1) size(SW,3) size(SW,4)]);
+      dz = permute(dz,[2 1 3 4]);
+  end
+  break
+  SW=1e-3*squeeze(nansum(squeeze(SW(:,2:end,:,:)),2)).*squeeze(nansum(squeeze(dz(:,2:end,:,:)),2));
+  %SW = SW.*dz;
   %sum the SW in the vertical
-  SW=squeeze(nansum(SW,2));
+  %SW = squeeze(nansum(squeeze(SW(:,2:end,:,:)),2))*1e-3;
+  %dz2 = squeeze(nansum(squeeze(dz(:,2:end,:,:)),2));
+  %SW = SW./dz2;
+  %SW=squeeze(nansum((SW),2));
 
   for time=1:size(LW,1)
     hfs = squeeze(LW(time,:,:)+SW(time,:,:)+lh(time,:,:)+sh(time,:,:)+calv(time,:,:)+freeze(time,:,:));
     dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
     Qf(timeind) = nansum(dnm(:));
+    hfs = squeeze(LW(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    LWt(timeind) = nansum(dnm(:));
+    hfs = squeeze(SW(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    SWt(timeind) = nansum(dnm(:));
+    hfs = squeeze(lh(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    lht(timeind) = nansum(dnm(:));
+    hfs = squeeze(sh(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    sht(timeind) = nansum(dnm(:));
+    hfs = squeeze(calv(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    calvt(timeind) = nansum(dnm(:));
+    hfs = squeeze(freeze(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    freezet(timeind) = nansum(dnm(:));
     timeind = timeind+1
-    save(savename,'Qf')
+    %save(savename,'Qf')
+    save(savename,'Qf','LWt','SWt','lht','sht','calvt','freezet')
   end
 end
 

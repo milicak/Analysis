@@ -2,12 +2,13 @@ clear all
 Cp=3985; %specific heat ratio m^2/(s^2*C)
 rho0=1035; %
 
-rcp8_5 = 2; %if rcp,historical or control is processed
+rcp8_5 = 1; %if rcp,historical or control is processed
 
 if rcp8_5 == 1
   % RCP 8.5
-  folder_name = '/archive/esm2g/fre/postriga_esm_20110506/ESM2G/ESM2G-HC2_2006-2100_all_rcp85_ZC2/gfdl.default-prod/pp/ocean/ts/annual/95yr/' 
-  savename = 'matfiles/ESM2G_rcp8_5_heatflux';
+  %folder_name = '/archive/esm2g/fre/postriga_esm_20110506/ESM2G/ESM2G-HC2_2006-2100_all_rcp85_ZC2/gfdl.default-prod/pp/ocean/ts/annual/95yr/' 
+  folder_name = '/work/milicak/RUNS/gold/'
+  savename = 'matfiles/ESM2G_rcp8_5_heatfluxv2';
   fyear = 2006;
   lyear = 2100;
 elseif rcp8_5 == 0
@@ -24,7 +25,8 @@ elseif rcp8_5 == 2
   lyear = 2005;
 end
 
-gridfile = '/archive/esm2g/fre/postriga_esm_20110506/ESM2G/ESM2G_pi-control_C2/gfdl.default-prod/pp/ocean/ocean.static.nc';
+%gridfile = '/archive/esm2g/fre/postriga_esm_20110506/ESM2G/ESM2G_pi-control_C2/gfdl.default-prod/pp/ocean/ocean.static.nc';
+gridfile = '/work/milicak/RUNS/gold/ocean.static.nc';
 mask = nc_varget(gridfile,'wet');
 area = nc_varget(gridfile,'area_t');
 lonh = nc_varget(gridfile,'geolon');
@@ -141,12 +143,29 @@ for i=1:length(lyear)
   lh = nc_varget(filename_lh,'latent');
   sh = nc_varget(filename_sh,'sensible');
   hpme = nc_varget(filename_HPME,'Heat_PmE');
+  break
 
   for time=1:size(LW,1)
     hfs = squeeze(LW(time,:,:)+SW(time,:,:)+lh(time,:,:)+sh(time,:,:)+hpme(time,:,:));
     dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
     Qf(timeind) = nansum(dnm(:));
+    hfs = squeeze(LW(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    LWt(timeind) = nansum(dnm(:));
+    hfs = squeeze(SW(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    SWt(timeind) = nansum(dnm(:));
+    hfs = squeeze(lh(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    lht(timeind) = nansum(dnm(:));
+    hfs = squeeze(sh(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    sht(timeind) = nansum(dnm(:));
+    hfs = squeeze(hpme(time,:,:));
+    dnm = hfs.*in.*area*1e-6./(Cp*rho0); %Sv*C
+    hpmet(timeind) = nansum(dnm(:));
     timeind = timeind+1
-    save(savename,'Qf')
+    %save(savename,'Qf')
+    save(savename,'Qf','LWt','SWt','lht','sht','hpmet')
   end
 end

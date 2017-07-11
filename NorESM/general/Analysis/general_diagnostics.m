@@ -23,8 +23,8 @@ clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 1; % first year
-lyear = 92; % last year
+fyear = 1; %166; % first year
+lyear = 62; % last year
 
 m2y = 1; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
@@ -59,10 +59,12 @@ end
 
 global_EKE = false;
 sshmean = false;
+seaice = true;
+seaicemean = false;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
-amoc_time = true;
+amoc_time = false;
 amoc_mean = false;
 kappaN2 = false;
 drake_tr = false;
@@ -158,6 +160,16 @@ end
 % global ssh time mean
 if(sshmean == true)
   [ssh]=general_diagnostics_sshmean(root_folder,expid,m2y,fyear,lyear,grid_file);
+end
+
+% global seaice extend
+if(seaice == true)
+  [areaiceNH areaiceSH]=general_diagnostics_seaiceextend(root_folder,expid,m2y,fyear,lyear,grid_file);
+end
+
+% global seaice mean
+if(seaicemean == true)
+  [icemean]=general_diagnostics_seaicemean(root_folder,expid,m2y,fyear,lyear,grid_file);
 end
 
 % global time mean

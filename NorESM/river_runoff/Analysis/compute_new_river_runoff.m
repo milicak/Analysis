@@ -10,7 +10,7 @@ rnfC2 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitr
 area2 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','arear');
 lon1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','xc');
 lat1 = ncread('/hexagon/work/shared/noresm/inputdata/lnd/dlnd7/RX1/runoff.daitren.iaf.20120419.nc','yc');
-
+break
 area1 = repmat(area1,[1 1 size(rnfC2,3)]);
 area2 = repmat(area2,[1 1 size(rnfC2,3)]);
 rnfC1 = repmat(rnfC1,[1 1 size(rnfC2,3)/size(rnfC1,3)]);

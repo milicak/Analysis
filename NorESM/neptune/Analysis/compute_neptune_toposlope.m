@@ -65,8 +65,8 @@ end
 topo_dy(:,1)==(topo(:,2)-topo(:,1))./(dy(:,1)*1e3);
 
 
-%reverse sign to make compatible with Holloway formulation
-topo_dx = -topo_dx;
+%reverse sign of topo_dy to make compatible with Holloway formulation
+topo_dx = topo_dx;
 topo_dy = -topo_dy;
 
 plon=ncgetvar(grid_file,'plon');
