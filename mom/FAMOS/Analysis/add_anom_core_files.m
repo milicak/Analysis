@@ -1,6 +1,9 @@
 clear all
 
-index=4;
+index=1;
+%str_time = 5;
+%offset = 42344;
+%offset = (1980-1948+1)*4*365-4;
 str_time = (1980-1948+1)*4*365-4;
 offset = 4;
 

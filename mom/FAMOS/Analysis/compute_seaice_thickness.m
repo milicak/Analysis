@@ -13,19 +13,13 @@ fname = [root_folder project_name '/history_1-62years/00010101.ice_month.nc'];
 aname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/gfdl-mom/grids_bathymetry/ocean.static.nc';
 
 fice = ncread(fname,'CN');
+hice = ncread(fname,'HI');
 area = ncread(aname,'area_t');
 
 fice = squeeze(nansum(fice,3));
-fice(fice<fice_cr) = 0.0;
-area = repmat(area,[1 1 size(fice,3)]);
-xice = fice.*area;
-xice = xice(:,100:end,:);
-xice = squeeze(nansum(xice,1));
-xice = squeeze(nansum(xice,1));
+hice(hice<fice_cr) = 0.0;
+hice = reshape(hice,[size(hice,1) size(hice,2) 12 size(hice,3)/12]);
 
-xice = xice';
 break
-xice = reshape(xice,[12 length(xice)/12]);
-
-savename = ['matfiles/' project_name '_ice_extend.mat']
-save(savename,'xice')
+savename = ['matfiles/' project_name '_ice_thickness.mat']
+save(savename,'hice')
