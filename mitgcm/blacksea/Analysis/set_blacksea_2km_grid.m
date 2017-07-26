@@ -86,6 +86,31 @@ start_date = datenum('01-Jan-2011') ;
  fprintf(1,' Starting integration on [%s] with [%d]s steps.     \n',datestr(start_date),deltat) ;
  fprintf(1,'\n\n') ;
 %
+% compute lonc and latc
+% LONC (x,y) dimensions
+% LATC (x,y) dimensions
+% LONC.bin  longitude east of cell center
+% LATC.bin  latitude north of cell center
+% LONG.bin  longitude east of southwest corner of cell
+% LATG.bin  latitude north of southwest corner of cell
+% DYF.bin   meridional distance in m between V-points
+% DXF.bin   zonal distance in m between U-points
+% DYU.bin   meridional distance in m between U-points
+% DXV.bin   zonal distance in m between V-points
+% DYC.bin   meridional distance in m between tracer points
+% DXC.bin   zonal distance in m between tracer points
+% DYG.bin   meridional distance in m between cell corners
+% DXG.bin   zonal distance in m between cell corners
+% RAZ.bin   vertical face area in m^2 for vorticity points
+% RAW.bin   vertical face area in m^2 for u cells
+% RAS.bin   vertical face area in m^2 for v cells
+% RA.bin    vertical face area in m^2 for tracer cells
+[LONC LATC] = meshgrid(XC,YC);
+[LONG LATG] = meshgrid(XG,YG);
+LONC = LONC';
+LONG = LONG';
+LATC = LATC';
+LATG = LATG';
 break
 
 % Writing files
