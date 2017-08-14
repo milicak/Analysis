@@ -23,11 +23,18 @@ clear xx X1
 %convert sea values to ice-values
 %X(X==24)=icevalue;
 
-lon=ncgetvar('/work/milicak/0.25/grid.nc','plon');
-lat=ncgetvar('/work/milicak/0.25/grid.nc','plat');
+%lon=ncgetvar('/work/milicak/0.25/grid.nc','plon');
+%lat=ncgetvar('/work/milicak/0.25/grid.nc','plat');
+lon=ncread('/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx0.25v4/20170619/grid.nc','plon');
+lat=ncread('/hexagon/work/shared/noresm/inputdata/ocn/micom/tnx0.25v4/20170619/grid.nc','plat');
+fcor=coriolis(lat)+coriolis_beta(lat);
 
-foldername=['/hexagon/work/milicak/archive/NOIIA_T62_tn025_001/ocn/hist/'];
-prefix=[foldername 'NOIIA_T62_tn025_001.micom.hd.'];
+%foldername=['/hexagon/work/milicak/archive/NOIIA_T62_tn025_001/ocn/hist/'];
+%prefix=[foldername 'NOIIA_T62_tn025_001.micom.hd.'];
+
+foldername=['/work/milicak/mnt/viljework/archive/NOIIA_T62_tn025v4_ctrl_srxbal_Jorgversion_noGM/ocn/hist/'];
+prefix=[foldername 'NOIIA_T62_tn025v4_ctrl_srxbal_Jorgversion_noGM.micom.hm.'];
+%prefix=[foldername 'NOIIA_T62_tn025v4_ctrl_srxbal_Jorgversion_noGM.micom.hd.'];
 
 %if(mmap==0)
 % For 0.25 degree micom grid
@@ -48,15 +55,29 @@ prefix=[foldername 'NOIIA_T62_tn025_001.micom.hd.'];
 %ssh=nc_varget('/work/milicak/archive/NOIIA_T62_tn025_001/ocn/hist/NOIIA_T62_tn025_001.micom.hd.0011-01.nc','sst');
 
 k=1;
-for year=88:92
-for month=1:12 
+for year=57:57
+for month=1:1 
   sdate=sprintf('%4.4d%c%2.2d',year,datesep,month);
   disp(sdate)
   %sst=ncgetvar([prefix sdate '.nc'],'sst');
   ssh=ncgetvar([prefix sdate '.nc'],'sealv');
-  timereal=nc_varget([prefix sdate '.nc'],'time');
-  for day=[1 4 7 10 13 16 19 22 25 28]  %1:size(ssh,3)
-    data_plot=sq(ssh(:,:,day)); %mid of the month
+  uvel=ncgetvar([prefix sdate '.nc'],'mxlu');
+  vvel=ncgetvar([prefix sdate '.nc'],'mxlv');
+  timereal=ncread([prefix sdate '.nc'],'time');
+  for day=[1]  %1:size(ssh,3)
+  %for day=[1 4 7 10 13 16 19 22 25 28]  %1:size(ssh,3)
+   if(length(size(ssh))>2)
+      data_plot=sq(ssh(:,:,day)); %mid of the month
+   else
+      %data_plot=sq(ssh(:,:)); %mid of the month
+      dvdx = diff(vvel,1,1);
+      dudy = diff(uvel,1,2);
+      dvdx(end+1,:) = dvdx(1,:);
+      dudy(:,end+1) = dudy(:,1);
+      vort = (dvdx-dudy)./27750; %27750 is quarter degree in meter
+      data_plot = vort./fcor;
+   end
+   keyboard
     hhh=figure('Visible','off');
     set(hhh, 'Position', [220 220 800 600])
       %l1 = light;
@@ -87,7 +108,8 @@ for month=1:12
       l3 = light;
       %l1 = light;
       % Agulhas region
-      caxis( [-2+offset  1.5+offset] );
+      caxis( [-2.1+offset  1.3+offset] );
+      %caxis( [-2+offset  1.5+offset] );
 
 
       lighting phong      

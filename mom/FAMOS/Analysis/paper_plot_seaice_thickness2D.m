@@ -27,7 +27,7 @@ end
 save('matfiles/ITU-MOM_2D_ice_thickness.mat','ice_thickness_ann','ice_thickness_mar','ice_thickness_sep');
 
 
-figure
+figure(1)
 m_projpolar
 m_pcolor(lon,lat,ice_thickness_ann('BG_pos')-ice_thickness_ann('ctrl'));shf
 caxis([-1.5 1.5])
@@ -38,7 +38,7 @@ title('BG-pos');
 printname = ['paperfigs/seaice_thickness_BG_pos_annual_anomaly_map.eps'];
 print(1,'-depsc2','-r300',printname)
 
-figure
+figure(2)
 m_projpolar
 m_pcolor(lon,lat,ice_thickness_ann('BG_neg')-ice_thickness_ann('ctrl'));shf
 caxis([-1.5 1.5])
@@ -47,4 +47,4 @@ m_coast('patch',[.7 .7 .7])
 m_grid
 title('BG-neg');
 printname = ['paperfigs/seaice_thickness_BG_neg_annual_anomaly_map.eps'];
-print(1,'-depsc2','-r300',printname)
+print(2,'-depsc2','-r300',printname)

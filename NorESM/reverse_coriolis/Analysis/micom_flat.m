@@ -12,7 +12,8 @@ if isempty(pclon) & isempty(pclat)
 end
 
 %if isempty(MAP_PROJECTION)
-  m_proj('Equidistant Cylindrical','lon',[-180 180],'lat',[-90 90]);
+  %m_proj('Equidistant Cylindrical','lon',[-180 180],'lat',[-90 90]);
+  m_proj('Equidistant Cylindrical','lon',[-280 80],'lat',[-90 90]);
 %end
 
 if nargin==2
