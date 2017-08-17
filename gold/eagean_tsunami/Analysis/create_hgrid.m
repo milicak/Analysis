@@ -10,81 +10,51 @@ function  create_hgrid(L,M,Lhalf,Mhalf,grdname,title)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%L= NXTOT; M=NYTOT
-Lp=L;
-Mp=M;
-%Lp=L+1;
-%Mp=M+1;
+Lp=L+1;
+Mp=M+1;
 
-nw = netcdf(grdname, 'clobber');
-result = redef(nw);
+ncid = netcdf.create(grdname,'NC_CLOBBER');
 
-nw('nxp') = Lp;
-nw('nyp') = Mp;
-nw('nx') = L-1;
-nw('ny') = M-1;
-nw('L') = Lhalf;
-nw('M') = Mhalf;
+% Define dimensions
+nip_dimid = netcdf.defDim(ncid,'nxp',Lp);
+njp_dimid = netcdf.defDim(ncid,'nyp',Mp);
+ni_dimid = netcdf.defDim(ncid,'nx',L);
+nj_dimid = netcdf.defDim(ncid,'ny',M);
+nl_dimid = netcdf.defDim(ncid,'L',Lhalf);
+nm_dimid = netcdf.defDim(ncid,'M',Mhalf);
 
 %
 %  Create variables and attributes
 %
 
-nw{'lon'} = ncfloat('one');
-nw{'lon'}.long_name = ncchar('Longitude');
-nw{'lon'}.units = ncchar('kilometers');
-nw{'lon'}.cartesian_axis = ncchar('X');
+x_varid = netcdf.defVar(ncid,'x','float',[nip_dimid njp_dimid]);
+netcdf.putAtt(ncid,x_varid,'standard_name','geographic_longitude');
+netcdf.putAtt(ncid,x_varid,'units','degrees_east');
 
-nw{'lat'} = ncfloat('one');
-nw{'lat'}.long_name = ncchar('Latitude');
-nw{'lat'}.units = ncchar('kilometers');
-nw{'lat'}.cartesian_axis = ncchar('Y');
+y_varid = netcdf.defVar(ncid,'y','float',[nip_dimid njp_dimid]);
+netcdf.putAtt(ncid,y_varid,'standard_name','geographic_latitude');
+netcdf.putAtt(ncid,y_varid,'units','degrees_north');
 
-nw{'x'} = ncdouble('nyp', 'nxp');
-nw{'x'}.long_name = ncchar('geographic_longitude');
-nw{'x'}.units = ncchar('kilometers');
+dx_varid = netcdf.defVar(ncid,'dx','float',[ni_dimid njp_dimid]);
+netcdf.putAtt(ncid,dx_varid,'standard_name','grid_edge_x_distance');
+netcdf.putAtt(ncid,dx_varid,'units','meters');
 
-nw{'y'} = ncdouble('nyp', 'nxp');
-nw{'y'}.long_name = ncchar('geographic_latitude');
-nw{'y'}.units = ncchar('kilometers');
+dy_varid = netcdf.defVar(ncid,'dy','float',[nip_dimid nj_dimid]);
+netcdf.putAtt(ncid,dy_varid,'standard_name','grid_edge_y_distance');
+netcdf.putAtt(ncid,dy_varid,'units','meters');
 
-nw{'dx'} = ncdouble('nyp', 'nx');
-nw{'dx'}.long_name = ncchar('grid_edge_x_distance');
-nw{'dx'}.units = ncchar('meters');
+angle_varid = netcdf.defVar(ncid,'angle','float',[nip_dimid njp_dimid]);
+netcdf.putAtt(ncid,angle_varid,'standard_name','grid_vertex_x_angle_WRT_geographic_east');
+netcdf.putAtt(ncid,angle_varid,'units','degrees_east');
 
-nw{'dy'} = ncdouble('ny', 'nxp');
-nw{'dy'}.long_name = ncchar('grid_edge_y_distance');
-nw{'dy'}.units = ncchar('meters');
+area_varid = netcdf.defVar(ncid,'area','float',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,area_varid,'standard_name','grid_cell_area');
+netcdf.putAtt(ncid,area_varid,'units','m2');
 
-nw{'angle'} = ncdouble('nyp', 'nxp');
-nw{'angle'}.long_name = ncchar('grid_vertex_x_angle_WRT_geographic_east');
-nw{'angle'}.units = ncchar('degrees_east');
+depth_varid = netcdf.defVar(ncid,'depth','float',[nl_dimid nm_dimid]);
+netcdf.putAtt(ncid,depth_varid,'standard_name','Basin Depth');
+netcdf.putAtt(ncid,depth_varid,'units','meters');
 
-nw{'area'} = ncdouble('ny', 'nx');
-nw{'area'}.long_name = ncchar('grid_cell_area');
-nw{'area'}.units = ncchar('m2');
+% End definitions and leave define mode.                                        
+netcdf.endDef(ncid) 
 
-nw{'depth'} = ncdouble('M', 'L');
-nw{'depth'}.long_name = ncchar('Basin Depth');
-nw{'depth'}.units = ncchar('meter');
-
-
-
-% Close the netcdf
-
-result = endef(nw);
-
-
-%
-% Create global attributes
-%
-
-nw.title = ncchar(title);
-nw.title = title;
-nw.date = ncchar(date);
-nw.date = date;
-nw.type = ncchar('GOLD grid file');
-nw.type = 'GOLD grid file';
-
-result = close(nw);
-      
