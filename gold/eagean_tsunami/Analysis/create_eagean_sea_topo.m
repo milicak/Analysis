@@ -2,8 +2,8 @@ clear all
 
 
 %now let's do the hybrid grid
-nx = 720;
-ny = 820;
+nx = 1400;
+ny = 1500; %820;
 nxp = nx+1;
 nyp = ny+1;
 
@@ -19,10 +19,15 @@ lon = ncread(global_topo_file,'x');
 lat = ncread(global_topo_file,'y');
 topo = ncread(global_topo_file,'z');
 
-lat_start = 30.5; %southern boundary
-lat_end = 42;   %northern boundary
-lon_start = 20.2; %eastern boundary
-lon_end = 30;   %western boundary
+%lat_start = 30.5; %southern boundary
+%lat_end = 42;   %northern boundary
+%lon_start = 20.2; %eastern boundary
+%lon_end = 30;   %western boundary
+
+lat_start = 35; %southern boundary
+lat_end = 38;   %northern boundary
+lon_start = 25; %eastern boundary
+lon_end = 29;   %western boundary
 
 %lat_start = -90;%southern boundary
 %lat_end = 90;  %northern boundary
@@ -79,6 +84,55 @@ h = -depth_t;
 clear depth_t
 depth_t = h(1:2:end,1:2:end);
 %depth_t(mask_rho==0)=0;
+
+if 1
+shallowest_depth = 0;
+shallowest_ocean_depth = 0.01;
+land = -0.03;
+depth_t(depth_t<shallowest_depth & depth_t>land) = land;
+[NX NY] = size(depth_t);
+dnm = depth_t;
+fprintf(1,'2. Removing isolated ocean points.\n') ;
+for nn = 1:8   % 3 or 4 sweeps should be enough?
+%for nn = 1:1   % 3 or 4 sweeps should be enough?
+   for ii = 2:NX-1
+      for jj = 2:NY-1
+         sides = (depth_t(ii-1,jj  ) <= - shallowest_depth) + ...
+                 (depth_t(ii  ,jj-1) <= - shallowest_depth) + ...
+                 (depth_t(ii  ,jj+1) <= - shallowest_depth) + ...
+                 (depth_t(ii+1,jj  ) <= - shallowest_depth) ;
+         if(sides < 2 && depth_t(ii,jj) <= - shallowest_depth)    % Less than 2 sides of this ocean point areocean points.
+            depth_t(ii,jj) = land ;
+%           fprintf(1,' Splat (%d, %d)!\n',ii,jj) ;
+         end % if
+      end %jj
+   end %ii
+end % nn
+%break
+end
+
+%clip land values
+%depth_t(depth_t<-5) = -5;
+% minimum ocean depth
+depth_t(depth_t<shallowest_ocean_depth & depth_t>0) = shallowest_ocean_depth;
+
+% border values
+%depth_t(1:5,:) = 2;
+%depth_t(:,1:5) = 2;
+%depth_t(end-5:end,:) = 2;
+%depth_t(:,end-5:end) = 2;
+
+
+%dnm = depth_t(:,200:end);
+%dnm(dnm<0) = 2;
+%depth_t(:,200:end) = dnm;
+%dnm = depth_t(200:end,:);
+%dnm(dnm<0) = 2;
+%depth_t(200:end,:) = dnm;
+
+%depth_t(3:250,50:110) = -5;
+%depth_t(3:end-2,200:400) = -5;
+%depth_t(320:end-2,90:120) = -5;
 
 area = dx(:,1:nyp-1).*dy(1:nxp-1,:);
 
