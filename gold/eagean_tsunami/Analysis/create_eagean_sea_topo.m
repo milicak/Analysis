@@ -2,8 +2,8 @@ clear all
 
 
 %now let's do the hybrid grid
-nx = 1400;
-ny = 1500; %820;
+nx = 2800;
+ny = 3000; %820;
 nxp = nx+1;
 nyp = ny+1;
 
@@ -13,11 +13,17 @@ rtarget = 0.2; %aim for smoothing
 % Title of the project
 title = 'Eagean_Sea_mosaic'
 
-global_topo_file = '/work/milicak/ETOPO2v2g_f4.nc';
+%global_topo_file = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/ETOPO2v2g_f4.nc';
+global_topo_file = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
 
-lon = ncread(global_topo_file,'x');
-lat = ncread(global_topo_file,'y');
+%lon = ncread(global_topo_file,'x');
+%lat = ncread(global_topo_file,'y');
 topo = ncread(global_topo_file,'z');
+dims = ncread(global_topo_file,'dimension');
+topo = reshape(topo,[dims(1) dims(2)]);
+topo = fliplr(topo);
+lon = -180: (360/(double(dims(1))-1)) :180;
+lat = -90: (180/(double(dims(2))-1)) :90;
 
 %lat_start = 30.5; %southern boundary
 %lat_end = 42;   %northern boundary
@@ -29,19 +35,31 @@ lat_end = 38;   %northern boundary
 lon_start = 25; %eastern boundary
 lon_end = 29;   %western boundary
 
+lat_startwoa = lat_start-1; %southern boundary
+lat_endwoa = lat_end+1;   %northern boundary
+lon_startwoa = lon_start-1; %eastern boundary
+lon_endwoa = lon_end+1;   %western boundary
+
 %lat_start = -90;%southern boundary
 %lat_end = 90;  %northern boundary
 %lon_start = -180;%southern boundary
 %lon_end = 180;  %northern boundary
 
-istr = max(find(lon<=lon_start));
-iend = max(find(lon<=lon_end));
-jstr = max(find(lat<=lat_start));
-jend = max(find(lat<=lat_end));
+istr = max(find(lon<=lon_startwoa));
+iend = max(find(lon<=lon_endwoa));
+jstr = max(find(lat<=lat_startwoa));
+jend = max(find(lat<=lat_endwoa));
 
 lon_new = lon(istr:iend);
 lat_new = lat(jstr:jend);
 topo_new = topo(istr:iend,jstr:jend);
+% open the Karaada island
+topo_new(417,360)=-18;
+topo_new(416,362)=-18;
+topo_new(418,361)=-18;
+topo_new(420,359:360)=-18;
+topo_new(419,359:360)=-18;
+clear topo
 
 % in this version we will use constant dx and dy
 % However it is possible to do a varying change dx dy
@@ -115,6 +133,7 @@ end
 %depth_t(depth_t<-5) = -5;
 % minimum ocean depth
 depth_t(depth_t<shallowest_ocean_depth & depth_t>0) = shallowest_ocean_depth;
+depth_t(depth_t>4000)=4000;
 
 % border values
 %depth_t(1:5,:) = 2;
