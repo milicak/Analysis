@@ -1,6 +1,9 @@
-%cl1ar all
-if 0
-    
+%clear all
+colormaptype = 'demcmap';
+%colormaptype = 'gebcoland';
+%colormaptype = 'gray';
+
+if 1
 root_folder = '/hexagon/work/milicak/RUNS/gold/eagean_tsunami/';
 
 project_name = 'Exp01.0'
@@ -11,6 +14,8 @@ fname = [root_folder project_name '/prog2.nc'];
 
 mask1 = ncread(grid_name,'wet');
 depth = ncread(grid_name,'D');
+dnm = -depth;
+dnm(dnm<0) = NaN;
 lon = ncread(grid_name,'geolon');
 lat = ncread(grid_name,'geolat');
 mask2 = zeros(size(depth,1),size(depth,2));
@@ -41,47 +46,67 @@ eta(:,:,1) = squeeze(e1(:,:,1));
 %hold on
 end
 
+C = [-5000.0 -4000.0 -3000.0 -2500.0 -2000.0 ...                                
+     -1500.0 -1000.0  -500.0  -200.0  -100.0 ...                                
+     -50.0   -25.0   -10.0     0.0    50.0 ...                                
+      100.0   200.0   300.0   400.0   500.0 ...                                
+      600.0   700.0   800.0  1000.0];      
+
+% for full gebco bathy      
+%[c,hc]=m_contourf(lon,lat,-depth,C,'linecolor','none');
+%colormap(gebco)
+%hb=cbarfmb([C(1) C(end)],C,'horizontal','nonlinear'); 
+%cdatamidlev([hc;hb],C,'nonlinear'); 
+topo = -depth;
+topo(topo<0) = NaN;
+
 for k=1:60
     no=num2str(k,'%.4d');
     skip = 1;
+    %hhh = figure(1);
     hhh=figure('Visible','off');
-    %hhh = figure(1)
     set(hhh, 'Position', [220 220 800 600]) 
-    %l3 = light;
-    %lightangle(l3, 0, 90)  
-
-    b1 = mesh(lon,lat,-depth);
-    set(b1,'Facecolor',[.8 .8 .8],'EdgeColor','none');
-    camlight; lighting gouraud;
-    hold on
-    %view(-10,10)
-    zlim([-2200 2000])
-    view(3)
-    view(-30,40)
-    %xlim([26.8 28.3]);ylim([36.5 37.2])
-    xlim([26.5 28.3]);ylim([36 37.3])
-    freezeColors
-
 
     offset = 200;
     data_plot = squeeze(eta(:,:,k)).*mask2;
-    h1 = surf( lon(1:skip:end,1:skip:end), lat(1:skip:end,1:skip:end), ...
-    data_plot(1:skip:end,1:skip:end)*offset,'facecolor','interp','edgecolor','none');
-    %CT=cbrewer('div','BrBG',256*256);
-    CT=cbrewer('seq','Blues',256*256);
+    data_plot(mask2==0)=NaN;
+
+    %m_proj('lambert','lon',[26.8 28.3],'lat',[36.5 37.2]);
+    % whole_domain
+    m_proj('lambert','lon',[25 29],'lat',[35 38]);
+
+    %data_plot(mask2==0)=NaN;
+    m_pcolor(lon,lat,data_plot*offset);shading interp
+    hold on
     %needJet2
     %colormap(map)
     %colormap(jet(2097152));
     %colormap(rainbow(2097152));
-    colormap(CT)
+    colormap(bluewhitered(32))
     caxis([-0.5 0.5]*offset)
-    printname=['gifs/Bodrum_ssh_333d' no];                                           
+    freezeColors
+    switch colormaptype
+        case char('gray')
+            %b1 = m_pcolor(lon,lat,sq(1-mask1));shading interp
+            b1 = m_pcolor(lon,lat,sq(1-mask2));shading interp
+            colormap(gray)
+            caxis([-15 7]) % make it a little darker
+        case char('gebcoland')
+            [c,hc]=m_contourf(lon,lat,dnm,C(14:end),'linecolor','none');
+            colormap(gebco_land)
+            hb=cbarfmi([0 C(end)],C(14:end),'horizontal','nonlinear');
+            cdatamidlev([hc;hb],C,'nonlinear');
+        case char('demcmap')
+            m_pcolor(lon,lat,dnm);shading interp 
+            demcmap([0 2000])
+        %end
+    end
+    m_grid
+    printname=['gifs/Bodrum_ssh_2d' no];                                           
     set(gca,'LooseInset',get(gca,'TightInset'))                                 
     set(gca, 'visible', 'off')                                                  
     set(gcf,'color','w')                                                        
     print(hhh,'-r300','-dpng','-zbuffer',printname)  
     k
     close all
-%set(findobj(gca,'type','surface'),'FaceLighting','phong','AmbientStrength',.5,'DiffuseStrength',.5,'SpecularStrength',.1,'SpecularExponent',2,'BackFaceLighting','reverselit')
-%l3 = light;
 end
