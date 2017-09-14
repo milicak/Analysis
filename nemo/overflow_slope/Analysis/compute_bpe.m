@@ -15,19 +15,20 @@ grdfile = [root_dir 'mesh_mask_OVF_zps.nc'];
 dx = ncread(grdfile,'e1t');
 dy = ncread(grdfile,'e2t');
 depth = ncread(grdfile,'mbathy');
+%%%% IMPORTANT To get the bathymetry
+depth = depth*20; 
+%%%%
 area = dx.*dy;
 temp = ncread(tfname,'thetao_inst');
 time = ncread(tfname,'time_instant');
 dzt = ncread(dzfname,'e3t_inst');
 ssh = ncread(sshfname,'ssh_inst');
 % remove the closed boundary areas j=1, j=end, i=1, i=end
-if 0
-temp = squeeze(temp(2:end-1,2:end-1,:,:));
-dzt = squeeze(dzt(2:end-1,2:end-1,:,:));
-ssh = squeeze(ssh(2:end-1,2:end-1,:,:));
-area = squeeze(area(2:end-1,2:end-1,:,:));
-depth = squeeze(depth(2:end-1,2:end-1,:,:));
-end
+%temp = squeeze(temp(2:end-1,2:end-1,1:end-1,:));
+%dzt = squeeze(dzt(2:end-1,2:end-1,1:end-1,:));
+%ssh = squeeze(ssh(2:end-1,2:end-1,1:end-1,:));
+%area = squeeze(area(2:end-1,2:end-1,1:end-1,:));
+%depth = squeeze(depth(2:end-1,2:end-1,:,:));
 
 BPE = [];
 FBPE = [];
@@ -59,12 +60,12 @@ for timeind = 1:length(time)
 
 end %timeind
 
-timeind = 17;
+timeind = 20;
 zr = squeeze(dzt(:,2,:,timeind));
 zr = cumsum(zr,2);
 T1 = squeeze(temp(:,2,:,timeind));
 lon = ncread(grdfile,'nav_lon');
 lon = lon(:,2);
-lon = repmat(lon,[1 101]);
+lon = repmat(lon,[1 size(T1,2)]);
 figure
 pcolor(lon,-zr,T1);shading flat;colorbar

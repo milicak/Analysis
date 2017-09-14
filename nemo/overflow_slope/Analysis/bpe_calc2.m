@@ -28,7 +28,8 @@ switch eos_type
     case ('nonlinear')
         sigma_model=this_eos_nonlinear(theta_model,salt_model,2000e4);
 end
-sigma_model=sigma_model-(max(sigma_model(:))+min(sigma_model(:)))/2; % Shift to reduce round-off errors
+% for accuracy
+%sigma_model=sigma_model-(max(sigma_model(:))+min(sigma_model(:)))/2; % Shift to reduce round-off errors
 [rho_sorted,j]=sort(sigma_model(:)','descend'); % Sort by densest first
 vol_sorted=dxdydz(j);                           % with associated volume
 theta_sorted=theta_model(j);                    % and associated theta
@@ -125,7 +126,7 @@ switch eos_type
         rhos=this_eos_nonlinear(thetas,salts,ps); 
 end
 %for accuracy
-rhos=rhos-(max(rhos)+min(rhos))/2;
+%rhos=rhos-(max(rhos)+min(rhos))/2;
 
 
 old_total_volume=total_volume; % Keep for estimating errors
@@ -184,14 +185,14 @@ rho = (P + p0) ./ (lambda + al0.*(P + p0));
 function [rho,al0,lambda,p0] = this_eos_linear(T,S,P)
 
 % Linear EOS
-rho = 26-0.21*(T-15.0)+0.75*(S-35.0);
+rho = 1026-0.21*(T-15.0)+0.75*(S-35.0);
 
 % ==================================================================
 
 function [P,rho] = int_for_p(T,S,dz,gravity)
 
 P=0*T+cumsum(dz)*gravity*1025; % Initial guess fo pressure
-rho=this_eos(T,S,P);
+rho=this_eos_nonlinear(T,S,P);
 %Pio=[];
 for it=1:5;
   dp=gravity*rho.*dz;
@@ -202,7 +203,7 @@ for it=1:5;
 %    stats(Pi-Pio)
 %    Pio=Pi;
 %  end
-  rho=this_eos(T,S, (Pi(1:end-1)+Pi(2:end))/2 );
+  rho=this_eos_nonlinear(T,S, (Pi(1:end-1)+Pi(2:end))/2 );
 end
 Pi=[0 cumsum(dp)];
 P=(Pi(1:end-1)+Pi(2:end))/2;
