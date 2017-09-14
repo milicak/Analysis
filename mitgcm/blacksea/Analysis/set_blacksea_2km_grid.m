@@ -9,6 +9,21 @@ fprintf(1,' Setting domain boundaries and resolution for 2km Spill jet model wit
 dxfile='dx_2km.bin';
 dyfile='dy_2km.bin';
 dzfile='dz_2km.bin';
+loncfile='LONC.bin';
+latcfile='LATC.bin';
+longfile='LONG.bin';
+latgfile='LATG.bin';
+dxffile='DXF.bin';
+dyffile='DYF.bin';
+dxgfile='DXG.bin';
+dygfile='DYG.bin';
+dxcfile='DXC.bin';
+dycfile='DYC.bin';
+dxvfile='DXV.bin';
+dyufile='DYU.bin';
+
+
+
 accur='real*8';
 ieee='b';
 
@@ -111,10 +126,9 @@ LONC = LONC';
 LONG = LONG';
 LATC = LATC';
 LATG = LATG';
-break
 
 % Writing files
-if 0
+if 1
  fprintf(1,' Writing fields to grid files \n') ;
  fprintf(1,'delX into %s\n',dxfile) ; 
  fprintf(1,'delY into %s\n',dyfile) ;
@@ -123,8 +137,11 @@ if 0
 fid=fopen(dxfile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
 fid=fopen(dyfile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
 fid=fopen(dzfile,'w',ieee); fwrite(fid,delZ,accur); fclose(fid);
+fid=fopen(loncfile,'w',ieee); fwrite(fid,LONC,accur); fclose(fid);
+fid=fopen(longfile,'w',ieee); fwrite(fid,LONG,accur); fclose(fid);
+fid=fopen(latcfile,'w',ieee); fwrite(fid,LATC,accur); fclose(fid);
+fid=fopen(latgfile,'w',ieee); fwrite(fid,LATG,accur); fclose(fid);
 end % if
-
 
 disp(' ');
 fprintf(1,'ygOrigin = %2.5f,\n',min(YG(:))) ;

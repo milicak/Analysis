@@ -226,5 +226,62 @@ m_coast('patch',[.7 .7 .7],'edgecolor','r');
 m_grid('box','fancy','tickdir','in');
 hold off
 
+bath5(isnan(bath5)) = 0;
+
+mask = zeros(size(bath5,1),size(bath5,2));
+mask(bath5<0) = 1;
+
+%writing bathy lon lat values to netcdf file
+ncid=netcdf.create(['BlackSea_grid_NX_' num2str(NX) '_NY_' num2str(NY) '.nc'],'NC_CLOBBER');
+
+%Define dimensions
+ni_dimid=netcdf.defDim(ncid,'x',NX);  
+nj_dimid=netcdf.defDim(ncid,'y',NY); 
+nz_dimid=netcdf.defDim(ncid,'z',NZ); 
+
+% Define variables and assign attributes
+tlon_varid=netcdf.defVar(ncid,'nav_lon','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,tlon_varid,'long_name','T grid center longitude');
+netcdf.putAtt(ncid,tlon_varid,'units','degrees_east');
+
+tlat_varid=netcdf.defVar(ncid,'nav_lat','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,tlat_varid,'long_name','T grid center latitude');
+netcdf.putAtt(ncid,tlat_varid,'units','degrees_north');
+
+navlev_varid=netcdf.defVar(ncid,'nav_lev','double',[nz_dimid]);
+netcdf.putAtt(ncid,navlev_varid,'long_name','T grid center vertical');
+netcdf.putAtt(ncid,navlev_varid,'units','meter');
+
+glon_varid=netcdf.defVar(ncid,'nav_long','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,glon_varid,'long_name','T grid corner longitude');
+netcdf.putAtt(ncid,glon_varid,'units','degrees_east');
+
+glat_varid=netcdf.defVar(ncid,'nav_latg','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,glat_varid,'long_name','T grid corner latitude');
+netcdf.putAtt(ncid,glat_varid,'units','degrees_north');
+
+tdepth_varid=netcdf.defVar(ncid,'mbathy','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,tdepth_varid,'long_name','depth of T grid cells');
+netcdf.putAtt(ncid,tdepth_varid,'units','meter');
+%netcdf.putAtt(ncid,tdepth_varid,'coordinates','TLON TLAT');
+
+tmask_varid=netcdf.defVar(ncid,'tmaskutil','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,tmask_varid,'long_name','sea mask of T grid cells');
+netcdf.putAtt(ncid,tmask_varid,'units',' ');
+%netcdf.putAtt(ncid,tmask_varid,'coordinates','TLON TLAT');
+% End definitions and leave define mode.
+netcdf.endDef(ncid)
+
+% Provide values for time invariant variables.
+netcdf.putVar(ncid,navlev_varid,double(delZ));
+netcdf.putVar(ncid,tlon_varid,double(LONC));
+netcdf.putVar(ncid,tlat_varid,double(LATC));
+netcdf.putVar(ncid,glon_varid,double(LONG));
+netcdf.putVar(ncid,glat_varid,double(LATG));
+netcdf.putVar(ncid,tdepth_varid,double(bath5'));
+netcdf.putVar(ncid,tmask_varid,double(mask'));
+% Close netcdf file
+netcdf.close(ncid)
+
 
 

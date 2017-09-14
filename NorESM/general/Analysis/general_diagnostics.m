@@ -23,8 +23,8 @@ clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 1; %166; % first year
-lyear = 62; % last year
+fyear = 228; %166; % first year
+lyear = 248; % last year
 
 m2y = 1; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
@@ -59,8 +59,8 @@ end
 
 global_EKE = false;
 sshmean = false;
-seaice = true;
-seaicemean = false;
+seaice = false;
+seaicemean = true;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
@@ -169,7 +169,7 @@ end
 
 % global seaice mean
 if(seaicemean == true)
-  [icemean]=general_diagnostics_seaicemean(root_folder,expid,m2y,fyear,lyear,grid_file);
+  [icemean hicemean]=general_diagnostics_seaicemean(root_folder,expid,m2y,fyear,lyear,grid_file);
 end
 
 % global time mean
