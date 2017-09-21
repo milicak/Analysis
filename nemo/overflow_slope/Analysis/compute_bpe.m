@@ -4,12 +4,13 @@ grav = 9.81;
 root_dir = '/export/grunchfs/unibjerknes/milicak/bckup/nemo/overflow_slope/'
 
 % file names for temperature and dzt
-%tfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
-%dzfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
-%sshfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
-tfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
-dzfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
-sshfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
+tfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
+dzfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
+sshfname = [root_dir 'OVF_sco_FCT2_fluxcen_lapahm1000_grid_T.nc'];
+%tfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
+%dzfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
+%sshfname = [root_dir 'OVF_sco_FCT4_fluxcen_lapahm1000_grid_T.nc'];
+
 grdfile = [root_dir 'mesh_mask_OVF_zps.nc'];
 
 dx = ncread(grdfile,'e1t');

@@ -21,6 +21,10 @@ dxcfile='DXC.bin';
 dycfile='DYC.bin';
 dxvfile='DXV.bin';
 dyufile='DYU.bin';
+razfile='RAZ.bin';
+rawfile='RAW.bin';
+rafile='RA.bin';
+rasfile='RAS.bin';
 
 
 
@@ -127,6 +131,7 @@ LONG = LONG';
 LATC = LATC';
 LATG = LATG';
 
+break
 % Writing files
 if 1
  fprintf(1,' Writing fields to grid files \n') ;
@@ -141,6 +146,10 @@ fid=fopen(loncfile,'w',ieee); fwrite(fid,LONC,accur); fclose(fid);
 fid=fopen(longfile,'w',ieee); fwrite(fid,LONG,accur); fclose(fid);
 fid=fopen(latcfile,'w',ieee); fwrite(fid,LATC,accur); fclose(fid);
 fid=fopen(latgfile,'w',ieee); fwrite(fid,LATG,accur); fclose(fid);
+fid=fopen(razfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
+fid=fopen(rawfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
+fid=fopen(rafile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
+fid=fopen(rasfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
 end % if
 
 disp(' ');

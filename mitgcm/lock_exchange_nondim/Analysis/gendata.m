@@ -92,7 +92,7 @@ switch title
 
 end  %switch
 
-%break
+break
 
 %close boundary in x-direction and periodic boundary in y-direction
 d(1,:)=0.0;d(end,:)=0.0;
