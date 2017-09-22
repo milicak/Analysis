@@ -4,9 +4,9 @@ clear all
 root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/mom/FAMOS/';
 
 %project_name = 'om3_core3_ctrl'
-project_name = 'om3_core3_2'
+%project_name = 'om3_core3_2'
 %project_name = 'om3_core3_2_BG_pos'
-%project_name = 'om3_core3_2_BG_neg'
+project_name = 'om3_core3_2_BG_neg'
 %project_name = 'om3_core3_2_GS_pos'
 %project_name = 'om3_core3_2_GS_neg'
 
@@ -16,6 +16,10 @@ aname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/gfd
 mname = ['/fimm/home/bjerknes/milicak/Analysis/mom/APE/Analysis/grid_spec_v6_regMask.nc'];
 
 area = ncread(aname,'area_t');
+depth = ncread(aname,'ht');
+depth(depth<0)=0;
+depth(depth>300)=0;
+depth(depth~=0)=1;
 mask = ncread(mname,'tmask');
 wt = ncread(fname,'wt');
 % 20 meter 
@@ -23,9 +27,9 @@ wt = squeeze(wt(:,:,2,:));
 
 % mask == 4 is for the Arctic
 % Pacific ==> Arcitc
-mask(mask==3) = 4;
+%mask(mask==3) = 4;
 % Atlantic ==> Arcitc
-mask(mask==2) = 4;
+%mask(mask==2) = 4;
 % make whole new mask
 mask(mask~=4) = 0;
 mask(mask==4) = 1;
@@ -40,14 +44,18 @@ lat1(end+1) = lat1(1);
 in = insphpoly(lon,lat,lon1,lat1,0.,90.);                                       
 in = double(in);
 dnm2 = in.*area;
+dnm3 = mask.*depth.*area;
 
 wt_BG = [];
+wt_300 = [];
 for time = 1:size(wt,3)
     wt1 = squeeze(wt(:,:,time));
     dnm = wt1.*area.*in;
     wt_BG(time) = nansum(dnm(:))./nansum(dnm2(:));
+    dnm = wt1.*area.*mask.*depth;
+    wt_300(time) = nansum(dnm(:))./nansum(dnm3(:));
     time
 end
 
 savename = ['matfiles/' project_name '_wt_time.mat']
-save(savename,'wt_BG')
+save(savename,'wt_BG','wt_300')

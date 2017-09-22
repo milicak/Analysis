@@ -28,3 +28,21 @@ legend('BG-pos','BG-neg','location','northwest')
 printname = ['paperfigs/wvel.png'];
 print(1,'-dpng','-r300',printname)
 
+wvel300 = containers.Map
+wvel300('ctrl') = out1.wt_300(397:end);
+wvel300('BG_pos') = out2.wt_300(397:end);
+wvel300('BG_neg') = out3.wt_300(397:end);
+
+savename = ['matfiles/wvel300_all_time.mat']
+save(savename,'wvel')
+
+figure(2)
+plot((wvel300('BG_pos')-wvel300('ctrl')))
+hold on
+plot((wvel300('BG_neg')-wvel300('ctrl')),'r')
+title('wvel 300')
+break
+ylim([-6 6]*1e-7)
+legend('BG-pos','BG-neg','location','northwest')
+printname = ['paperfigs/wvel300.png'];
+print(1,'-dpng','-r300',printname)
