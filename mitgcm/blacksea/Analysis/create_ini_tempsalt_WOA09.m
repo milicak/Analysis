@@ -3,13 +3,13 @@ clear all; clear global;
 more off
 % Masking parameters                                                            
 hFacMin = 0.1;                                                                  
-hFacMinDz = 5;                                                                  
+hFacMinDz = 0.5;                                                                  
 land = 0;        
 ieee='b';                                                                       
 accuracy='real*8';
 
-tmp_out = ['woa13_Temp.bin'] ;                                              
-slt_out = ['woa13_Salt.bin'] ; 
+tmp_out = ['woa13_Temp.data'] ;                                              
+slt_out = ['woa13_Salt.data'] ; 
 
 
 batfile = 'Blacksea_2km_bathy.bin' ;
@@ -45,6 +45,9 @@ for ii = 1:NX
         Mslt(ii,jj,inds2) = land.*ones(size(inds2)); 
     end % jj
 end % ii
+% set constant value
+Mtmp(mask==1) = 12;
+Mslt(mask==1) = 26;
 
 % Write out fields.                                                             
 fprintf(1,'\n Writing field to [%s].\n\n',tmp_out) ;                            

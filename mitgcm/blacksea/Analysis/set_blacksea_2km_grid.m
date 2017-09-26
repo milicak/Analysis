@@ -6,8 +6,8 @@
 fprintf(1,' Setting domain boundaries and resolution for 2km Spill jet model with OBCS: \n\n') ;
 
 %output parameters
-dxfile='dx_2km.bin';
-dyfile='dy_2km.bin';
+%dxfile='dx_2km.bin';
+%dyfile='dy_2km.bin';
 dzfile='dz_2km.bin';
 loncfile='LONC.bin';
 latcfile='LATC.bin';
@@ -36,7 +36,8 @@ lonmin=27 ;
 lonmax=42 ; 
 latmin=40.0 ;
 latmax=48.0 ;
-NX = 510 ;
+NX = 446 ;
+%NX = 510 ;
 NY = 254 ;
 rdelx=NX/(lonmax-lonmin) ;   % Calculate central spacing the same as before. 
 rdely=NY/(latmax-latmin) ;
@@ -131,25 +132,46 @@ LONG = LONG';
 LATC = LATC';
 LATG = LATG';
 
-break
+% DX*.bin should be (Nx*NY,1) size
+delX = repmat(delX,[1 NY]);
+delY = repmat(delY,[1 NX]);
+delX = delX(:);
+delY = delY';
+delY = delY(:);
+%convert degree to m
+% dx
+% m_lldist([lon(1,1) lon(2,1)],[lat(1,1) lat(2,1)])*1e3
+m_lldist([LONC(1,1) LONC(2,1)],[LATC(1,1) LATC(2,1)])*1e3 
+% dy
+% m_lldist([lon(1,1) lon(1,2)],[lat(1,1) lat(1,2)])*1e3 
+m_lldist([LONC(1,1) LONC(1,2)],[LATC(1,1) LATC(1,2)])*1e3
+delX = delX.*111e3;
+delY = delY.*111e3;
+%break
 % Writing files
 if 1
  fprintf(1,' Writing fields to grid files \n') ;
- fprintf(1,'delX into %s\n',dxfile) ; 
- fprintf(1,'delY into %s\n',dyfile) ;
+ fprintf(1,'delX into %s\n',dxffile) ; 
+ fprintf(1,'delY into %s\n',dyffile) ;
  fprintf(1,'delZ into %s\n\n',dzfile) ;
   
-fid=fopen(dxfile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
-fid=fopen(dyfile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
-fid=fopen(dzfile,'w',ieee); fwrite(fid,delZ,accur); fclose(fid);
 fid=fopen(loncfile,'w',ieee); fwrite(fid,LONC,accur); fclose(fid);
 fid=fopen(longfile,'w',ieee); fwrite(fid,LONG,accur); fclose(fid);
 fid=fopen(latcfile,'w',ieee); fwrite(fid,LATC,accur); fclose(fid);
 fid=fopen(latgfile,'w',ieee); fwrite(fid,LATG,accur); fclose(fid);
-fid=fopen(razfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
-fid=fopen(rawfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
-fid=fopen(rafile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
-fid=fopen(rasfile,'w',ieee); fwrite(fid,delX*delY',accur); fclose(fid);
+fid=fopen(dxffile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
+fid=fopen(dyffile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
+fid=fopen(dxgfile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
+fid=fopen(dygfile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
+fid=fopen(dxcfile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
+fid=fopen(dycfile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
+fid=fopen(dxvfile,'w',ieee); fwrite(fid,delX,accur); fclose(fid);
+fid=fopen(dyufile,'w',ieee); fwrite(fid,delY,accur); fclose(fid);
+fid=fopen(dzfile,'w',ieee); fwrite(fid,delZ,accur); fclose(fid);
+fid=fopen(razfile,'w',ieee); fwrite(fid,delX.*delY,accur); fclose(fid);
+fid=fopen(rawfile,'w',ieee); fwrite(fid,delX.*delY,accur); fclose(fid);
+fid=fopen(rafile,'w',ieee); fwrite(fid,delX.*delY,accur); fclose(fid);
+fid=fopen(rasfile,'w',ieee); fwrite(fid,delX.*delY,accur); fclose(fid);
 end % if
 
 disp(' ');

@@ -20,6 +20,7 @@ nip_dimid = netcdf.defDim(ncid,'nxp',Lp);
 njp_dimid = netcdf.defDim(ncid,'nyp',Mp);
 ni_dimid = netcdf.defDim(ncid,'nx',L);
 nj_dimid = netcdf.defDim(ncid,'ny',M);
+nz_dimid = netcdf.defDim(ncid,'nz',1);
 nl_dimid = netcdf.defDim(ncid,'L',Lhalf);
 nm_dimid = netcdf.defDim(ncid,'M',Mhalf);
 

@@ -6,11 +6,11 @@ colormaptype = 'demcmap';
 if 1
 root_folder = '/hexagon/work/milicak/RUNS/gold/eagean_tsunami/';
 
-project_name = 'Exp01.0'
+project_name = 'Exp01.2'
 
 grid_name = [root_folder project_name '/OUT/' 'ocean_geometry.nc'];
 ini_name = [root_folder project_name '/OUT/' 'GOLD_IC.nc'];
-fname = [root_folder project_name '/prog2.nc'];
+fname = [root_folder project_name '/prog.nc'];
 
 mask1 = ncread(grid_name,'wet');
 depth = ncread(grid_name,'D');

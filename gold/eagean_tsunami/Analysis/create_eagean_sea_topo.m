@@ -2,8 +2,8 @@ clear all
 
 
 %now let's do the hybrid grid
-nx = 2800;
-ny = 3000; %820;
+nx = 4550; %2800;
+ny = 3250; %3000; %820;
 nxp = nx+1;
 nyp = ny+1;
 
@@ -22,6 +22,10 @@ topo = ncread(global_topo_file,'z');
 dims = ncread(global_topo_file,'dimension');
 topo = reshape(topo,[dims(1) dims(2)]);
 topo = fliplr(topo);
+%open kara ada in the real file
+topo(24896:24899,15239) = -10;
+topo(24898:24899,15238) = -10;
+topo(24900,15287) = -10;
 lon = -180: (360/(double(dims(1))-1)) :180;
 lat = -90: (180/(double(dims(2))-1)) :90;
 
@@ -30,10 +34,10 @@ lat = -90: (180/(double(dims(2))-1)) :90;
 %lon_start = 20.2; %eastern boundary
 %lon_end = 30;   %western boundary
 
-lat_start = 35; %southern boundary
+lat_start = 34.3; %35; %southern boundary
 lat_end = 38;   %northern boundary
-lon_start = 25; %eastern boundary
-lon_end = 29;   %western boundary
+lon_start = 22.75; %25; %eastern boundary
+lon_end = 29.25; %29;   %western boundary
 
 lat_startwoa = lat_start-1; %southern boundary
 lat_endwoa = lat_end+1;   %northern boundary
@@ -54,11 +58,11 @@ lon_new = lon(istr:iend);
 lat_new = lat(jstr:jend);
 topo_new = topo(istr:iend,jstr:jend);
 % open the Karaada island
-topo_new(417,360)=-18;
-topo_new(416,362)=-18;
-topo_new(418,361)=-18;
-topo_new(420,359:360)=-18;
-topo_new(419,359:360)=-18;
+%topo_new(417,360)=-18;
+%topo_new(416,362)=-18;
+%topo_new(418,361)=-18;
+%topo_new(420,359:360)=-18;
+%topo_new(419,359:360)=-18;
 clear topo
 
 % in this version we will use constant dx and dy
