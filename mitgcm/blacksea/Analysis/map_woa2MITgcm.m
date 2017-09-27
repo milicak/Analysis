@@ -2,7 +2,7 @@
 % itimu Jan 10
 
 % "P" indicates "woa13" variable, "M" indicates MITgcm.
-function Mfield = map_woa2MITgcm(Pfld,lonMIT,latMIT,PlonsGlob,PlatsGlob,Mlevs,Plevs) 
+function Mfield = map_woa2MITgcm(Pfld,lonMIT,latMIT,PlonsGlob,PlatsGlob,Mlevs,Plevs,nanrepval) 
 
 % Build PHC lons lats and levs: check phc_info.txt
 %PlonsGlob  =   0.5:1:359.5;
@@ -29,7 +29,7 @@ latPHC = latPHC';
 
 % use Objective Analysis (OA) to remove NaNs from woa fields
 for k=1:size(Pf,3)
-    Pf(:,:,k)=get_missing_val(double(lonPHC),double(latPHC),squeeze(Pf(:,:,k)),NaN,0);
+    Pf(:,:,k)=get_missing_val(double(lonPHC),double(latPHC),squeeze(Pf(:,:,k)),NaN,0,nanrepval);
 end
 
 % Build MITgcm grid

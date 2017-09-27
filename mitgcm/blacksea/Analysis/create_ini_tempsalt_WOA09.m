@@ -34,8 +34,8 @@ depthwoa = ncread(Twoafname,'depth');
 saltwoa = ncread(Swoafname,'s_an');
 
 % Map WOA13 fields to MITgcm grid.    
-Mtmp = map_woa2MITgcm(tempwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa) ;
-Mslt = map_woa2MITgcm(saltwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa) ;
+Mtmp = map_woa2MITgcm(tempwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa,10) ;
+Mslt = map_woa2MITgcm(saltwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa,15) ;
 % Remove land points.
 fprintf(1,'\n Removing land points...(uses hFactors...') ;
 for ii = 1:NX
@@ -45,9 +45,6 @@ for ii = 1:NX
         Mslt(ii,jj,inds2) = land.*ones(size(inds2)); 
     end % jj
 end % ii
-% set constant value
-Mtmp(mask==1) = 12;
-Mslt(mask==1) = 26;
 
 % Write out fields.                                                             
 fprintf(1,'\n Writing field to [%s].\n\n',tmp_out) ;                            

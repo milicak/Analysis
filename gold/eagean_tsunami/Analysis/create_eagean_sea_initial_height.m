@@ -1,6 +1,6 @@
 clear all
 
-northdip = 0;
+northdip = 1;
 
 if northdip 
     fname = 'static_syn_northdip'
@@ -12,7 +12,8 @@ else
     %outname = 'Eagean_Sea_mosaicN1400M1500_southdip.nc';
 end
 
-grdname = 'Eagean_Sea_mosaicN2275M1625.nc';
+%grdname = 'Eagean_Sea_mosaicN2275M1625.nc';
+grdname = ['/export/grunchfs/unibjerknes/milicak/bckup/gold/eagean_tsunami/Eagean_Sea_mosaicN5000M5000.nc'];
 %grdname = 'Eagean_Sea_mosaicN1400M1500.nc';
 %command = ['cp ' grdname ' ' outname];
 %status = system(command);

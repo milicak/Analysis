@@ -13,7 +13,11 @@ function  create_hini_file(L,M,Lhalf,Mhalf,grdname,title)
 Lp=L+1;
 Mp=M+1;
 
-ncid = netcdf.create(grdname,'NC_CLOBBER');
+cmode = netcdf.getConstant('NETCDF4');
+cmode = bitor(cmode,netcdf.getConstant('CLASSIC_MODEL'));
+
+ncid = netcdf.create(grdname,cmode);
+%ncid = netcdf.create(grdname,'NC_CLOBBER');
 
 % Define dimensions
 nip_dimid = netcdf.defDim(ncid,'nxp',Lp);

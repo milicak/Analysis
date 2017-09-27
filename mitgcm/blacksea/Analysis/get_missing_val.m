@@ -114,28 +114,32 @@ if ro>0
     lat0=lat(j,i);
     lon0=lon(j,i);
     if j>1
-      od1=1./spheric_dist(lat0,lat(j-1,i),lon0,lon(j-1,i));
+      od1=1./spheriq_dist(lat0,lat(j-1,i),lon0,lon(j-1,i));
+      %od1=1./spheric_dist(lat0,lat(j-1,i),lon0,lon(j-1,i));
       f1=field(j-1,i);
     else
       od1=0;
       f1=0;
     end
     if j<M
-      od2=1./spheric_dist(lat0,lat(j+1,i),lon0,lon(j+1,i));
+      od2=1./spheriq_dist(lat0,lat(j+1,i),lon0,lon(j+1,i));
+      %od2=1./spheric_dist(lat0,lat(j+1,i),lon0,lon(j+1,i));
       f2=field(j+1,i);
     else
       od2=0;
       f2=0;
     end
     if i>1
-      od3=1./spheric_dist(lat0,lat(j,i-1),lon0,lon(j,i-1));
+      od3=1./spheriq_dist(lat0,lat(j,i-1),lon0,lon(j,i-1));
+      %od3=1./spheric_dist(lat0,lat(j,i-1),lon0,lon(j,i-1));
       f3=field(j,i-1);
     else
       od3=0;
       f3=0;
     end
     if i<L
-      od4=1./spheric_dist(lat0,lat(j,i+1),lon0,lon(j,i+1));
+      od4=1./spheriq_dist(lat0,lat(j,i+1),lon0,lon(j,i+1));
+      %od4=1./spheric_dist(lat0,lat(j,i+1),lon0,lon(j,i+1));
       f4=field(j,i+1);
     else
       od4=0;
