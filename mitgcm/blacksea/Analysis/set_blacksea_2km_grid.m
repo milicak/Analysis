@@ -147,7 +147,16 @@ m_lldist([LONC(1,1) LONC(2,1)],[LATC(1,1) LATC(2,1)])*1e3
 m_lldist([LONC(1,1) LONC(1,2)],[LATC(1,1) LATC(1,2)])*1e3
 delX = delX.*111e3;
 delY = delY.*111e3;
-%break
+earthRadiusInMeters = 6371000;
+dx = distance(LATC(1:end-1,:),LONC(1:end-1,:),LATC(2:end,:),LONC(2:end,:),earthRadiusInMeters);
+dy = distance(LATC(:,1:end-1),LONC(:,1:end-1),LATC(:,2:end),LONC(:,2:end),earthRadiusInMeters);
+dx(end+1,:) = dx(end,:);
+dy(:,end+1) = dy(:,end);
+dx = dx(:);
+dy = dy(:);
+delX = dx;
+delY = dy;
+
 % Writing files
 if 1
  fprintf(1,' Writing fields to grid files \n') ;
