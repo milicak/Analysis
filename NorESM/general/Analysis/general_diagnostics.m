@@ -12,8 +12,10 @@
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases_test_Xmas2015/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS4659K/chuncheng/cases/';
 %root_folder='/fimm/work/milicak/mnt/norstore/NS2345K/noresm/cases/';
+root_folder='/fimm/work/milicak/mnt/norstore/noresm/cases/';
 %root_folder='/fimm/work/milicak/mnt/viljework/noresm/';
-root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+%root_folder='/fimm/work/milicak/mnt/viljework/archive/';
+%root_folder='/work/milicak/archive/';
 %root_folder='/fimm/work/milicak/mnt/viljeworkalok/archive/';
 %root_folder='/hexagon/work/detivan/archive/';
 %root_folder='/hexagon/work/cgu025/archive/';
@@ -23,8 +25,8 @@ clear proj
 proj=projectname;
 expid=proj.expid
 
-fyear = 228; %166; % first year
-lyear = 248; % last year
+fyear = 241; %166; % first year
+lyear = 300; % last year
 
 m2y = 1; % if it is monthly then m2y=1; if it is yearly data then m2y=0;
 tripolar = true;
@@ -59,8 +61,8 @@ end
 
 global_EKE = false;
 sshmean = false;
-seaice = false;
-seaicemean = true;
+seaice = true;
+seaicemean = false;
 sshrms = false;
 rad_toa = false; 
 ocean_flx = false;
@@ -164,7 +166,7 @@ end
 
 % global seaice extend
 if(seaice == true)
-  [areaiceNH areaiceSH]=general_diagnostics_seaiceextend(root_folder,expid,m2y,fyear,lyear,grid_file);
+  [areaiceNH areaiceSH areaiceNH_mar areaiceSH_mar areaiceNH_sep areaiceSH_sep]=general_diagnostics_seaiceextend(root_folder,expid,m2y,fyear,lyear,grid_file);
 end
 
 % global seaice mean

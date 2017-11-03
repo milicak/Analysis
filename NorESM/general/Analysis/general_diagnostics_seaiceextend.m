@@ -1,4 +1,4 @@
-function [areaiceNH areaiceSH]=general_diagnostics_seaiceextend(root_folder,expid,m2y,fyear,lyear,grid_file)
+function [areaiceNH areaiceSH areaiceNH_mar areaiceSH_mar areaiceNH_sep areaiceSH_sep]=general_diagnostics_seaiceextend(root_folder,expid,m2y,fyear,lyear,grid_file)
 
 mask=ncgetvar(grid_file,'pmask');
 area=ncgetvar(grid_file,'parea');
@@ -33,6 +33,8 @@ ind = int16(ny/2);
 if m2y==1
   for year=fyear:lyear
     dnm=zeros(nx,ny);
+    dnmmar=zeros(nx,ny);
+    dnmsep=zeros(nx,ny);
     for month=1:12
       sdate=sprintf('%4.4d%c%2.2d',year,datesep,month);
       disp(sdate)
@@ -40,8 +42,20 @@ if m2y==1
       dnm2(dnm2<ice_cr)=0;
       dnm = dnm + dnm2.*area.*mask.*mw(month);
     end
+    sdate=sprintf('%4.4d%c%2.2d',year,datesep,3);
+    dnm2 = ncgetvar([prefix sdate '.nc'],'fice')./100;
+    dnm2(dnm2<ice_cr)=0;
+    dnmmar = dnmmar + dnm2.*area.*mask;
+    sdate=sprintf('%4.4d%c%2.2d',year,datesep,9);
+    dnm2 = ncgetvar([prefix sdate '.nc'],'fice')./100;
+    dnm2(dnm2<ice_cr)=0;
+    dnmsep = dnmsep + dnm2.*area.*mask;
     areaiceSH(n) = nansum(nansum(dnm(:,1:ind)));
     areaiceNH(n) = nansum(nansum(dnm(:,ind:end)));
+    areaiceSH_mar(n) = nansum(nansum(dnmmar(:,1:ind)));
+    areaiceNH_mar(n) = nansum(nansum(dnmmar(:,ind:end)));
+    areaiceSH_sep(n) = nansum(nansum(dnmsep(:,1:ind)));
+    areaiceNH_sep(n) = nansum(nansum(dnmsep(:,ind:end)));
     n = n+1;
   end
 else

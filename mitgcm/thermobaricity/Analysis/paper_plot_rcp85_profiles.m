@@ -52,7 +52,11 @@ for j=1:length(expnames)
     legend(gca,'show','Location','Southeast')
     dnmctrl = squeeze(nanmean(out.S1ctr));
     dnmrcp = squeeze(nanmean(out.S1rcp85));
-    plot(out.S1rcp85-out.S1ctr,-out.zr,'color',[.7 .7 .7])
+    if j~=4
+        plot(out.S1rcp85-out.S1ctr,-out.zr,'color',[.7 .7 .7])
+    else
+        plot(-(out.S1rcp85-out.S1ctr),-out.zr,'color',[.7 .7 .7])
+    end
     plot(out1S.Sini-out0S.Sini,out0T.zref,'b','linewidth',2,'DisplayName','Warm1')
     plot(out2S.Sini-out0S.Sini,out0T.zref,'c','linewidth',2,'DisplayName','Warm2')
     plot(out3S.Sini-out0S.Sini,out0T.zref,'r','linewidth',2,'DisplayName','Warm3')
