@@ -1,21 +1,22 @@
 clear all
 
 northdip = 1;
-ShapeName = 'northdip'
+%ShapeName = 'northdip'
+%ShapeName = 'southdip'
+ShapeName = 'gaussdist'
 
 switch ShapeName
     case char('northdip')
     fname = 'static_syn_northdip'
-    outname = 'Eagean_Sea_mosaicN2275M1625_northdip.nc';
+    outname = 'Eagean_Sea_mosaicN5000M5000_northdip.nc';
     %outname = 'Eagean_Sea_mosaicN1400M1500_northdip.nc';
     case char('southdip')
     fname = 'static_syn_southdip'
-    outname = 'Eagean_Sea_mosaicN2275M1625_southdip.nc';
+    outname = 'Eagean_Sea_mosaicN5000M5000_southdip.nc';
     %outname = 'Eagean_Sea_mosaicN1400M1500_southdip.nc';
     case char('gaussdist')
     fname = 'gaussian_initial.mat';
-    outname = 'Eagean_Sea_mosaicN2275M1625_gaussian.nc';
-end
+    outname = 'Eagean_Sea_mosaicN5000M5000_gaussian.nc';
 end
 
 %grdname = 'Eagean_Sea_mosaicN2275M1625.nc';
@@ -53,7 +54,6 @@ switch ShapeName
     lat1 = a.lat;
     zeta = a.ssh;
  end
-end
 
 
 %initial wave is zero
