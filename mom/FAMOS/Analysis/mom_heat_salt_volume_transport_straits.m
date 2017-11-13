@@ -19,9 +19,9 @@ root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/mom/FAMOS/';
 fname = [root_folder project_name '/om3_core3/history/salt_19480101.ocean_month.nc'];
 totaltime = ncread(fname,'time');
 
-% x-direction
 %time = 1;
 for time = 1:length(totaltime)
+    % x-direction
     fname = [root_folder project_name '/om3_core3/history/salt_xflux_adv_int_z_19480101.ocean_month.nc'];
     salt_xflux_adv_int_z = ncread(fname,'salt_xflux_adv_int_z',[1 1 time],[Inf Inf 1]);
 
@@ -192,11 +192,11 @@ for time = 1:length(totaltime)
         davis_salt_inflow(time) = nansum(dnmStr(dnmtr>0));
     end
     if(isempty(find(dnmtr<0)) == 1)
-        davis_volume_outlow(time) = 0.0; 
-        davis_heat_outlow(time) = 0.0; 
-        davis_salt_outlow(time) = 0.0;
+        davis_volume_outflow(time) = 0.0; 
+        davis_heat_outflow(time) = 0.0; 
+        davis_salt_outflow(time) = 0.0;
     else
-        davis_volume_outlow(time) = nansum(dnmtr(dnmtr<0));
+        davis_volume_outflow(time) = nansum(dnmtr(dnmtr<0));
         davis_heat_outflow(time) = nansum(dnmTtr(dnmtr<0));
         davis_salt_outflow(time) = nansum(dnmStr(dnmtr<0));
     end
@@ -286,8 +286,22 @@ davis_volume_outflow = nansum(davis_volume_outflow,1);
 davis_heat_outflow = nansum(davis_heat_outflow,1);
 davis_salt_outflow = nansum(davis_salt_outflow,1);
 
-break
-savename = ['matfiles/' project_name '_davis_transports.mat']
-save(savename,'fram_heat_inflow','fram_heat_outflow','fram_heat_total','fram_volume_inflow','fram_volume_outflow','fram_volume_total')
+savename = ['matfiles/' project_name '_fram_transports.mat']
+save(savename,'fram_heat_inflow','fram_heat_outflow','fram_heat_total', ...
+    'fram_volume_inflow','fram_volume_outflow','fram_volume_total' ...
+    'fram_salt_inflow','fram_salt_outflow','fram_salt_total')
+
 savename = ['matfiles/' project_name '_barents_transports.mat']
-save(savename,'barents_heat_inflow','barents_heat_outflow','barents_heat_total','barents_volume_inflow','barents_volume_outflow','barents_volume_total')
+save(savename,'barents_heat_inflow','barents_heat_outflow','barents_heat_total', ...
+    'barents_volume_inflow','barents_volume_outflow','barents_volume_total' ...
+    'barents_salt_inflow','barents_salt_outflow','barents_salt_total')
+    
+savename = ['matfiles/' project_name '_bering_transports.mat']
+save(savename,'bering_heat_inflow','bering_heat_outflow','bering_heat_total', ...
+    'bering_volume_inflow','bering_volume_outflow','bering_volume_total' ...
+    'bering_salt_inflow','bering_salt_outflow','bering_salt_total')
+
+savename = ['matfiles/' project_name '_davis_transports.mat']
+save(savename,'davis_heat_inflow','davis_heat_outflow','davis_heat_total', ...
+    'davis_volume_inflow','davis_volume_outflow','davis_volume_total' ...
+    'davis_salt_inflow','davis_salt_outflow','davis_salt_total')
