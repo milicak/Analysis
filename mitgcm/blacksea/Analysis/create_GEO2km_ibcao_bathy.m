@@ -91,6 +91,16 @@ bath4 = bath3 ;
 shallowest_depth = 10 ; % 20 !!
 fprintf(1,'1. set minimum depth to [%g]m deep.\n',shallowest_depth) ;
 bath4(bath4 > 0) = NaN;
+% remove places shallower than -3 meter. Set them land. This will help us for
+% interior points
+% for the Azak Sea
+xx = [36.3440 36.3342 37.0905 37.1019]; xx(end+1) = xx(1);
+yy = [45.5596 44.9732 44.9545 45.5377]; yy(end+1) = yy(1);
+in = insphpoly(lambda,phi,xx,yy,0,90);
+in = double(in);
+dnm = bath4;
+bath4(bath4 >= -3) = NaN;
+bath4(in==1) = dnm(in==1);
 bath4(bath4 >= -shallowest_depth) = -shallowest_depth;
 
 
@@ -100,11 +110,11 @@ for nn = 1:8   % 3 or 4 sweeps should be enough?
 %for nn = 1:1   % 3 or 4 sweeps should be enough?
    for ii = 2:NY-1
       for jj = 2:NX-1
-         sides = (bath4(ii-1,jj  ) <= - shallowest_depth) + ...
+         sides(ii,jj) = (bath4(ii-1,jj  ) <= - shallowest_depth) + ...
                  (bath4(ii  ,jj-1) <= - shallowest_depth) + ...
                  (bath4(ii  ,jj+1) <= - shallowest_depth) + ...
                  (bath4(ii+1,jj  ) <= - shallowest_depth) ;
-         if(sides < 2 && bath4(ii,jj) <= - shallowest_depth)    % Less than 2 sides of this ocean point areocean points.
+         if(sides(ii,jj) < 2 && bath4(ii,jj) <= - shallowest_depth)    % Less than 2 sides of this ocean point areocean points.
             bath4(ii,jj) = land ;
 %           fprintf(1,' Splat (%d, %d)!\n',ii,jj) ;
          end % if
@@ -129,6 +139,11 @@ yy = [46.2436   46.2639   46.4134   46.3636   46.1900   46.1679   46.2436];
 in = insphpoly(lambda,phi,xx,yy,0,90);
 in = double(in);
 bath4(in==1) = NaN;
+xx = [32.3117 32.3086 32.4583 32.4597]; xx(end+1) = xx(1);
+yy = [46.5972 46.4155 46.4211 46.6027]; yy(end+1) = yy(1);
+in = insphpoly(lambda,phi,xx,yy,0,90);
+in = double(in);
+bath4(in==1) = NaN;
 
 % 4. Remove obcs.
 if 1
@@ -144,7 +159,6 @@ if 1
     %bath4(  1,end) = 0 ; %close only southeastern corner
     %bath4(  1,  1) = 0 ; %close only southwestern corner    
 end % if
-%break
 
 if 0
 % 3. Remove lakes and other features by hand.

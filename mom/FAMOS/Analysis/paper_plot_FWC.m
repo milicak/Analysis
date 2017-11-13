@@ -31,6 +31,19 @@ FWC('BG_neg') = dnm(397:end);
 savename = ['matfiles/FWC_BG_all_time.mat']
 save(savename,'FWC')
 
+FWCt = containers.Map
+dnm = out1.FWC.*area;
+dnm = squeeze(nansum(dnm,1));
+dnm = squeeze(nansum(dnm,1));
+FWCt('ctrl') = dnm(397:end);
+dnm = out2.FWC.*area;
+dnm = squeeze(nansum(dnm,1));
+dnm = squeeze(nansum(dnm,1));
+FWCt('BG_pos') = dnm(397:end);
+dnm = out3.FWC.*area;
+dnm = squeeze(nansum(dnm,1));
+dnm = squeeze(nansum(dnm,1));
+FWCt('BG_neg') = dnm(397:end);
 
 figure(1)
 plot((FWC('BG_pos')-FWC('ctrl'))*1e-12)
@@ -40,7 +53,8 @@ title('FWC BG')
 ylim([-8 8])
 legend('BG-pos','BG-neg','location','northwest')
 printname = ['paperfigs/FWC_anomaly.png'];
-print(1,'-dpng','-r300',printname)
+%print(1,'-dpng','-r300',printname)
+break
 
 % year 1 mean
 tindex = (1980-1947)*12 +1;

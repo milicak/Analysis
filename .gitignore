@@ -1,4 +1,6 @@
 *.eps
+*.bin
+*.tif
 *.swp
 *.dat
 ferret*
