@@ -89,7 +89,7 @@ if 0
     hold off
 end % if
 
-delZ = [2:1:20, 20.*ones(1,60), 30:10:200] ;
+delZ = [2:1:20, 20.*ones(1,60), 30:10:150] ;
 depths = cumsum(delZ) - delZ./2 ;
 NZ = length(depths) ;
 deltat = 600 ;  % timestep in secs.

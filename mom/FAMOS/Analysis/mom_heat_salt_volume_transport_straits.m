@@ -6,11 +6,11 @@ rho0 = 1035;
 sv2mks = 1e9; 
 saln0r = 1/0.0348; % relative salinity 34.8
 
-project_name = 'om3_core3_2'
+%project_name = 'om3_core3_2'
 %project_name = 'om3_core3_2_BG_neg'
 %project_name = 'om3_core3_2_BG_pos'
 %project_name = 'om3_core3_2_GS_neg'
-%project_name = 'om3_core3_2_GS_pos'
+project_name = 'om3_core3_2_GS_pos'
 %project_name = 'om3_core3_ctrl'
 %root_folder = '/hexagon/work/milicak/RUNS/mom/' ;
 root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/mom/FAMOS/';
