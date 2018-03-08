@@ -27,6 +27,7 @@ Pf = Pfld(ind_w:ind_e,ind_s:ind_n,:);
 lonPHC = lonPHC';
 latPHC = latPHC';
 
+dnm = Pf;
 % use Objective Analysis (OA) to remove NaNs from woa fields
 for k=1:size(Pf,3)
     Pf(:,:,k)=get_missing_val(double(lonPHC),double(latPHC),squeeze(Pf(:,:,k)),NaN,0,nanrepval);

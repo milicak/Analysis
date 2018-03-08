@@ -13,7 +13,8 @@ slt_out = ['woa13_Salt.data'] ;
 
 
 batfile = 'Blacksea_2km_bathy.bin' ;
-ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
+%ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
+ibcaofile = '/okyanus/users/milicak/world_grid/GEBCO_2014_1D.nc';
 run set_blacksea_2km_grid 
 
 fid = fopen(batfile,'r',ieee); 
@@ -24,9 +25,9 @@ mask  = (hFacC ~= 0) ;
 mask2d  = mask (:,:,1);                                                         
 clear hFacC    
 
-Twoafname = '/export/grunchfs/unibjerknes/milicak/bckup/obs/blacksea_temp.nc';                                              
-Swoafname = '/export/grunchfs/unibjerknes/milicak/bckup/obs/blacksea_salt.nc';                  
-grdwoafname = '/export/grunchfs/unibjerknes/milicak/bckup/obs/blacksea_grid_info.nc';                  
+Twoafname = '/okyanus/users/milicak/obs/blacksea_temp.nc';                                              
+Swoafname = '/okyanus/users/milicak/obs/blacksea_salt.nc';                  
+grdwoafname = '/okyanus/users/milicak/obs/blacksea_grid_info.nc';                  
 
 tempwoa = ncread(Twoafname,'votemper');
 lonwoa = ncread(grdwoafname,'glamt');
@@ -36,8 +37,8 @@ depthwoa = depthwoa(200,100,:);
 saltwoa = ncread(Swoafname,'vosaline');
 
 % Map WOA13 fields to MITgcm grid.    
+keyboard
 Mtmp = map_blackseaobs2MITgcm(tempwoa,LONC,LATC,lonwoa,latwoa,squeeze(depths),squeeze(depthwoa),5) ;
-break
 Mslt = map_blackseaobs2MITgcm(saltwoa,LONC,LATC,lonwoa,latwoa,squeeze(depths),squeeze(depthwoa),14) ;
 % Remove land points.
 fprintf(1,'\n Removing land points...(uses hFactors...') ;
@@ -48,6 +49,7 @@ for ii = 1:NX
         Mslt(ii,jj,inds2) = land.*ones(size(inds2)); 
     end % jj
 end % ii
+return
 
 % Write out fields.                                                             
 fprintf(1,'\n Writing field to [%s].\n\n',tmp_out) ;                            

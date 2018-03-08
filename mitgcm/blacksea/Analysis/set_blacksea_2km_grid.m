@@ -156,6 +156,7 @@ dx = dx(:);
 dy = dy(:);
 delX = dx;
 delY = dy;
+return
 
 % Writing files
 if 1

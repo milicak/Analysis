@@ -11,8 +11,9 @@ clear all; clear global;
 more off
 fprintf(1,' Reading/writing GEBCO 2014 30min bathymetry.\n\n') ;
 
-outfile = 'Blacksea_2km_bathy.bin' ;
-ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
+outfile = 'Blacksea_2km_bathy.data' ;
+%ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
+ibcaofile = '/okyanus/users/milicak/world_grid/GEBCO_2014_1D.nc';
 
 run set_blacksea_2km_grid
 [lambda,phi]=meshgrid(XC,YC) ;
@@ -122,28 +123,54 @@ for nn = 1:8   % 3 or 4 sweeps should be enough?
    end %ii
 end % nn
 
-% 3. Remove Marmara Sea
-xx = [26.9853   28.1456   29.4804   30.5027   28.6438   27.2465   26.9853 26.9853];
-yy = [41.1000   41.1779   41.0721   40.6074   40.2104   40.2404   40.2000 41.1000];
-fprintf(1,'3. Remove Marmara Sea.\n') ;
-in = insphpoly(lambda,phi,xx,yy,0,90);
-in = double(in);
-bath4(in==1) = NaN;
-xx = [39.3959   39.3959   40.5023   40.4743   39.3959];
-yy = [47.5020   46.9101   46.8904   47.5625   47.5020];
-in = insphpoly(lambda,phi,xx,yy,0,90);
-in = double(in);
-bath4(in==1) = NaN;
-xx = [30.4749   30.4886   30.4302   30.1311   30.1586   30.3202   30.4749];
-yy = [46.2436   46.2639   46.4134   46.3636   46.1900   46.1679   46.2436];
-in = insphpoly(lambda,phi,xx,yy,0,90);
-in = double(in);
-bath4(in==1) = NaN;
-xx = [32.3117 32.3086 32.4583 32.4597]; xx(end+1) = xx(1);
-yy = [46.5972 46.4155 46.4211 46.6027]; yy(end+1) = yy(1);
-in = insphpoly(lambda,phi,xx,yy,0,90);
-in = double(in);
-bath4(in==1) = NaN;
+if 0
+    % 3. Remove Marmara Sea
+    xx = [26.9853   28.1456   29.4804   30.5027   28.6438   27.2465   26.9853 26.9853];
+    yy = [41.1000   41.1779   41.0721   40.6074   40.2104   40.2404   40.2000 41.1000];
+    fprintf(1,'3. Remove Marmara Sea.\n') ;
+    in = insphpoly(lambda,phi,xx,yy,0,90);
+    in = double(in);
+    bath4(in==1) = NaN;
+    xx = [39.3959   39.3959   40.5023   40.4743   39.3959];
+    yy = [47.5020   46.9101   46.8904   47.5625   47.5020];
+    in = insphpoly(lambda,phi,xx,yy,0,90);
+    in = double(in);
+    bath4(in==1) = NaN;
+    xx = [30.4749   30.4886   30.4302   30.1311   30.1586   30.3202   30.4749];
+    yy = [46.2436   46.2639   46.4134   46.3636   46.1900   46.1679   46.2436];
+    in = insphpoly(lambda,phi,xx,yy,0,90);
+    in = double(in);
+    bath4(in==1) = NaN;
+    xx = [32.3117 32.3086 32.4583 32.4597]; xx(end+1) = xx(1);
+    yy = [46.5972 46.4155 46.4211 46.6027]; yy(end+1) = yy(1);
+    in = insphpoly(lambda,phi,xx,yy,0,90);
+    in = double(in);
+    bath4(in==1) = NaN;
+end
+if 1
+    % open bosphprus
+    bgzdpth = -60;
+    bath4(63,121) = bgzdpth;
+    bath4(64,122) = bgzdpth;
+    bath4(67,123) = bgzdpth;
+    bath4(64,121) = bgzdpth;
+    bath4(63,120) = bgzdpth;
+    bath4(67:68,124) = bgzdpth;
+    bath4(72,124) = NaN;
+    bath4(69,125) = NaN;
+    bath4(65:66,122:123) = bgzdpth;
+    for j=63:76; for i=120:129
+        if(bath4(j,i) < 0)
+            bath4(j,i) = bgzdpth;
+        end
+    end;end
+    % dig blacksea exit
+    bath4(77:79,129:130) = bath4(77:79,129:130) - 12.0;
+    % dig marmara exit
+    bath4(59:60,117:119) = bath4(59:60,117:119) - 12.0;
+    bath4(61,118:120) = bgzdpth;
+    bath4(62,120) = bgzdpth;
+end
 
 % 4. Remove obcs.
 if 1
@@ -234,13 +261,16 @@ end
 incr=0.5;    
 m_proj('lambert','long',[lonmin-incr lonmax+incr],'lat',[latmin-incr latmax+incr]);
 %m_proj('mercator','long',[lonmin-incr lonmax+incr],'lat',[latmin-incr latmax+incr]);
-m_pcolor(XC,YC,bath5); shading interp; colorbar;
-hold on
-m_coast('patch',[.7 .7 .7],'edgecolor','r');
+m_pcolor(XC,YC,sq(bath5)); shading flat; colorbar;
+%hold on
+%m_coast('patch',[.7 .7 .7],'edgecolor','r');
 m_grid('box','fancy','tickdir','in');
 hold off
 
 bath5(isnan(bath5)) = 0;
+
+newbath = bath4;
+newbath(bath4==0)=bath3(bath4==0);
 
 mask = zeros(size(bath5,1),size(bath5,2));
 mask(bath5<0) = 1;
@@ -279,6 +309,10 @@ netcdf.putAtt(ncid,tdepth_varid,'long_name','depth of T grid cells');
 netcdf.putAtt(ncid,tdepth_varid,'units','meter');
 %netcdf.putAtt(ncid,tdepth_varid,'coordinates','TLON TLAT');
 
+ttopo_varid=netcdf.defVar(ncid,'topo','double',[ni_dimid nj_dimid]);
+netcdf.putAtt(ncid,ttopo_varid,'long_name','topo of T grid cells');
+netcdf.putAtt(ncid,ttopo_varid,'units','meter');
+
 tmask_varid=netcdf.defVar(ncid,'tmaskutil','double',[ni_dimid nj_dimid]);
 netcdf.putAtt(ncid,tmask_varid,'long_name','sea mask of T grid cells');
 netcdf.putAtt(ncid,tmask_varid,'units',' ');
@@ -293,6 +327,7 @@ netcdf.putVar(ncid,tlat_varid,double(LATC));
 netcdf.putVar(ncid,glon_varid,double(LONG));
 netcdf.putVar(ncid,glat_varid,double(LATG));
 netcdf.putVar(ncid,tdepth_varid,double(bath5'));
+netcdf.putVar(ncid,ttopo_varid,double(newbath'));
 netcdf.putVar(ncid,tmask_varid,double(mask'));
 % Close netcdf file
 netcdf.close(ncid)

@@ -24,8 +24,10 @@ mask  = (hFacC ~= 0) ;
 mask2d  = mask (:,:,1);                                                         
 clear hFacC    
 
-Twoafname = '/export/grunchfs/unibjerknes/milicak/bckup/OISST/woa13_decav_t00_04v2.nc';
-Swoafname = '/export/grunchfs/unibjerknes/milicak/bckup/OISST/woa13_decav_s00_04v2.nc';
+%Twoafname = '/export/grunchfs/unibjerknes/milicak/bckup/OISST/woa13_decav_t00_04v2.nc';
+%Swoafname = '/export/grunchfs/unibjerknes/milicak/bckup/OISST/woa13_decav_s00_04v2.nc';
+Twoafname = '/okyanus/users/milicak/obs/woa13_decav_t00_04v2.nc';
+Swoafname = '/okyanus/users/milicak/obs/woa13_decav_s00_04v2.nc';
 
 tempwoa = ncread(Twoafname,'t_an');
 lonwoa = ncread(Twoafname,'lon');
