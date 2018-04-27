@@ -48,8 +48,8 @@ T = noleapdatevec(time);
 mdays = [31    28    31    30    31    30    31    31    30    31    30    31];
 days(1) = 0.5*mdays(1);
 for kk=2:12
-dnm=cumsum(mdays(1:kk-1));     
-days(kk)=0.5*mdays(kk)+dnm(end);
+    dnm = cumsum(mdays(1:kk-1));     
+    days(kk) = 0.5*mdays(kk)+dnm(end);
 end
 days = days./365;
 days = days';
