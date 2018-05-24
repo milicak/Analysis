@@ -89,7 +89,10 @@ if 0
     hold off
 end % if
 
-delZ = [2:1:20, 20.*ones(1,60), 30:10:150] ;
+% Marcello's version
+% delZ = [2:1:20, 20.*ones(1,60), 30:10:150] ;
+% My version
+delZ = [2:0.25:17, 20.*ones(1,19), 20:20:220 270] ;
 depths = cumsum(delZ) - delZ./2 ;
 NZ = length(depths) ;
 deltat = 600 ;  % timestep in secs.
@@ -156,7 +159,6 @@ dx = dx(:);
 dy = dy(:);
 delX = dx;
 delY = dy;
-return
 
 % Writing files
 if 1
