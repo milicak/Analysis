@@ -14,6 +14,9 @@ root_folder = '/shared/projects/uniklima/globclim/milicak/mom/FAMOS/';
 fname = [root_folder project_name '/om3_core3/history/diff_cbt_t_19480101.ocean_month.nc'];
 %aname = '/export/grunchfs/unibjerknes/milicak/bckup/noresm/CORE2/Arctic/DATA/gfdl-mom/grids_bathymetry/ocean.static.nc';
 aname = '/work/users/mil021/RUNS/mom/FAMOS/om3_core3_2/om3_core3/history/ocean.static.nc';
+depth = ncread(aname,'ht');
+mask2 = ones(size(depth,1),size(depth,2));
+mask2(depth<300) = 0;
 
 kappad = squeeze(ncread(fname,'diff_cbt_t',[1 1 10 1],[Inf Inf 1 Inf]));
 
@@ -29,7 +32,8 @@ in = double(in);
 
 % Ekman pumping velocity ==> W_ek = curl(tau)/(rho*f)
 mask = repmat(in,[1 1 size(kappad,3)]);
-dnm = kappad.*mask;
+mask2 = repmat(mask2,[1 1 size(kappad,3)]);
+dnm = kappad.*mask.*mask2;
 dnm(dnm==0) = NaN;
 dnm = squeeze(nanmean(dnm,1));
 dnm = squeeze(nanmean(dnm,1));

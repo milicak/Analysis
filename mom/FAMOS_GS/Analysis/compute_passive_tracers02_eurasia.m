@@ -10,23 +10,22 @@ saln0r = 1/0.0348; % relative salinity 34.8
 %project_name = 'om3_core3_2'
 %project_name = 'om3_core3_2_BG_neg'
 %project_name = 'om3_core3_2_BG_pos'
-%project_name = 'om3_core3_2_GS_neg'
-project_name = 'om3_core3_2_GS_pos'
+project_name = 'om3_core3_2_GS_neg'
+%project_name = 'om3_core3_2_GS_pos'
 %project_name = 'om3_core3_ctrl'
 %root_folder = '/hexagon/work/milicak/RUNS/mom/' ;
 %root_folder = '/export/grunchfs/unibjerknes/milicak/bckup/mom/FAMOS/';
 root_folder = '/shared/projects/uniklima/globclim/milicak/mom/FAMOS/';
 
 varnames = {'ctl' 'gsp' 'gsn'};
-varname = ['ctl'];
+varname = ['gsn'];
 
 aname = '/work/users/mil021/RUNS/mom/FAMOS/om3_core3_2/om3_core3/history/ocean.static.nc';
 area = ncread(aname,'area_t');
-out = load('/export/grunchfs/unibjerknes/milicak/bckup/grunchhome/milicak/Analysis/NorESM/Arctic_seaice/Analysis/region_masks.mat');
+out = load('/shared/projects/uniklima/globclim/milicak/grunchhome/milicak/Analysis/NorESM/Arctic_seaice/Analysis/region_masks.mat');
 lon = ncread(aname,'geolon_t');
 lat = ncread(aname,'geolat_t');
-regionnames = [{'KaraBarents'}];
-in = insphpoly(lon,lat,out.lon1,out.lat1,0,90);
+in = insphpoly(lon,lat,out.lon7,out.lat7,0,90);
 in = double(in);
 in = repmat(in,[1 1 50]);
 area = repmat(area,[1 1 50]);
@@ -73,7 +72,7 @@ year = T(:,1) + days;
 
 %create netcdf file
 
-outname = ['data/ITU-MOM/' project_name '_passive02_Barents.nc']
+outname = ['data/ITU-MOM/' project_name '_passive02_Eurasia.nc']
 nccreate(outname,[varname 'passive02'],'Dimensions',{'time',length(time)},'Datatype','double')
 nccreate(outname,[varname 'passive02_vol'],'Dimensions',{'time',length(time)},'Datatype','double')
 

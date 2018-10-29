@@ -15,11 +15,9 @@ fname = [root_folder project_name '/om3_core3/history/19480101.ice_month.nc'];
 %fname = [root_folder project_name '/history_1-62years/00010101.ice_month.nc'];
 aname = '/work/users/mil021/RUNS/mom/FAMOS/om3_core3_2/om3_core3/history/ocean.static.nc';
 depth = ncread(aname,'ht');
-mask2 = ones(size(depth,1),size(depth,2));
-mask2(depth<300) = 0;
+area = ncread(aname,'area_t');
 
 fice = ncread(fname,'CN');
-area = ncread(aname,'area_t');
 
 lon = ncread(aname,'geolon_t');
 lat = ncread(aname,'geolat_t');
@@ -32,14 +30,23 @@ in = insphpoly(lon,lat,lon1,lat1,0.,90.);
 in = double(in);
 
 fice = squeeze(nansum(fice,3));
-fice(fice<fice_cr) = 0.0;
+%fice(fice<fice_cr) = 0.0;
 area = repmat(area,[1 1 size(fice,3)]);
+mask2 = ones(size(fice,1),size(fice,2));
+mask2(depth<300) = 0;
 mask = repmat(in,[1 1 size(fice,3)]);
 mask2 = repmat(mask2,[1 1 size(fice,3)]);
-xice = fice.*area.*mask.*mask2;
-xice = xice(:,100:end,:);
-xice = squeeze(nansum(xice,1));
-xice = squeeze(nansum(xice,1));
+fice = fice.*mask.*mask2.*area;
+fice = fice(:,100:end,:);
+fice = squeeze(nansum(fice,1));
+fice = squeeze(nansum(fice,1));
 
-savename = ['matfiles/' project_name '_ice_extend_BG.mat']
-save(savename,'xice')
+tmp = mask.*mask2.*area;
+tmp = tmp(:,100:end,:);
+tmp = squeeze(nansum(tmp,1));
+tmp = squeeze(nansum(tmp,1));
+
+fice = fice./tmp;
+
+savename = ['matfiles/' project_name '_ice_concentration_BG.mat']
+save(savename,'fice')
