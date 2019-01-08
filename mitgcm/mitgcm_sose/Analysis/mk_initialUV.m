@@ -17,20 +17,19 @@ lon = lon';lat = lat';
 lon = x';
 lat = y';
 
-tmp_out = ['soda20070101_Temp.data'] ; 
-slt_out = ['soda20070101_Salt.data'] ; 
+tmp_out = ['soda20070101_Uvel.data'] ; 
+slt_out = ['soda20070101_Vvel.data'] ; 
 
 
 woafname = 'soda3.7.2shrt_5dy_ocean_or_2007_01_01.nc';
 
-tempc = ncread(woafname,'temp');
-saltc = ncread(woafname,'salt');
+tempc = ncread(woafname,'u');
+saltc = ncread(woafname,'v');
 dzc = ncread(woafname,'st_ocean');
 
 lonc = ncread('topog.nc','x_T');
 latc = ncread('topog.nc','y_T');
 topoc = ncread('topog.nc','depth');
-
 
 dzf = [10.0,11.0,12.0,13.0,14.0,16.0,18.0,20.0,23.0,26.0, ... 
        29.0,33.0,37.0,42.0,48.0,55.0,63.0,72.0,82.0, ...     
@@ -65,6 +64,7 @@ saltc = saltc(:,1:415,:);
 lonc = lonc(:,1:415);
 latc = latc(:,1:415);
 topoc = topoc(:,1:415);
+tempcold = tempc;
 
 % flip temp and salt
 for kk=1:size(tempc,3)
@@ -93,7 +93,7 @@ lonc = [bb;aa];
 % use Objective Analysis (OA) to remove NaNs from woa fields                    
 for k=1:size(tempc,3)                                                              
     tempc(:,:,k) = get_missing_val(lonc,latc,squeeze(tempc(:,:,k)),NaN,0,0);
-    saltc(:,:,k) = get_missing_val(lonc,latc,squeeze(saltc(:,:,k)),NaN,0,35);
+    saltc(:,:,k) = get_missing_val(lonc,latc,squeeze(saltc(:,:,k)),NaN,0,0);
 end                                                                             
 
 % Extend PHC field at the bottom so no extrapolation is needed.
@@ -125,13 +125,13 @@ salt_mit = zeros(size(lon,1),size(lon,2),length(depths2)) ;
 for kk = 1:length(depths2)   % Loop over MITgcm levels.
     kk
     tmpPf = squeeze(temp_new(:,:,kk)) ;
-    temp_mit(:,:,kk) = griddata(lonc,latc,tmpPf,lon,lat,'cubic') ;
+    temp_mit(:,:,kk) = griddata(lonc,latc,tmpPf,lon,lat,'linear') ;
     tmpPf = squeeze(salt_new(:,:,kk)) ;
-    salt_mit(:,:,kk) = griddata(lonc,latc,tmpPf,lon,lat,'cubic') ;
+    salt_mit(:,:,kk) = griddata(lonc,latc,tmpPf,lon,lat,'linear') ;
 end % kk
 
-% temp_mit = temp_mit.*mask;
-% salt_mit = salt_mit.*mask;
+temp_mit = temp_mit.*mask;
+salt_mit = salt_mit.*mask;
 temp_mit(1,:,:) = temp_mit(2,:,:);
 temp_mit(end-1,:,:) = temp_mit(end-2,:,:);
 temp_mit(end,:,:) = temp_mit(end-1,:,:);
@@ -139,7 +139,6 @@ salt_mit(1,:,:) = salt_mit(2,:,:);
 salt_mit(end-1,:,:) = salt_mit(end-2,:,:);
 salt_mit(end,:,:) = salt_mit(end-1,:,:);
 % Write out fields.                                                             
-temp_mit(temp_mit<-2)=-2;
 
 writebin(tmp_out,temp_mit,1,'real*4')
 writebin(slt_out,salt_mit,1,'real*4')
