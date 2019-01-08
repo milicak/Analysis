@@ -15,6 +15,13 @@ dzc = [10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.01, ...
 Nzc = length(dzc);
 
 depth=rdmds('Depth');
+load grid
+lat = LAT(4:2:(end-3),4:2:(end-3));
+latW = lat(1,:);
+for i = 1:length(latW)
+    pres(:,i)=sw_pres(cumsum(dzc)',latW(i));
+end
+pres = pres';
 
 pin='/home/milicak/models/MITgcm/Projects/Arctic_4km/Exp0vanilla/';
 
@@ -29,3 +36,21 @@ salt = readbin(fin,[nd Nzc nt_new]);
 
 depthW = depth(1,:);
 
+% warm Atlantic layer is between 1-26 layer and 800-1000 i points
+Atlanticwarm = 3; % Celcius
+
+for time=1:size(temp,3)
+    time
+    tmpt = squeeze(temp(:,:,time));
+    tmps = squeeze(salt(:,:,time));
+    dens = sw_dens(tmps,tmpt,pres);
+    tmpt(800:1000,1:26) = tmpt(800:1000,1:26) + Atlanticwarm;
+    CT = gsw_CT_from_t(tmps,tmpt,pres);
+    % conservative temperature
+    tmps = gsw_SA_from_rho(dens,CT,pres);
+    temp(:,:,time) = tmpt;
+    salt(:,:,time) = tmps;
+end
+% write output
+writebin('OBWt_arctic_warmAtl_1680x1536',temp);
+writebin('OBWs_arctic_warmAtl_1680x1536',salt);
