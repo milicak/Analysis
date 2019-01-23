@@ -26,5 +26,7 @@ Depth2(Depth2<0.1) = 0;
 Depth2(Depth2<10 & Depth2~=0) = 10;
 
 Depth2 = -Depth2';
+Depth2(3479:3484,639) = 0;
+Depth2(3479:3484,640) = 0;
 
 writebin(outname,Depth2,1,'real*4');

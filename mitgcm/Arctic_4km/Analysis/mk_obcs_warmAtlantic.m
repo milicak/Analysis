@@ -43,13 +43,13 @@ for time=1:size(temp,3)
     time
     tmpt = squeeze(temp(:,:,time));
     tmps = squeeze(salt(:,:,time));
-    dens = sw_dens(tmps,tmpt,pres);
+    dens = gsw_rho_t_exact(tmps,tmpt,pres);
     tmpt(800:1000,1:26) = tmpt(800:1000,1:26) + Atlanticwarm;
-    CT = gsw_CT_from_t(tmps,tmpt,pres);
+    % CT = gsw_CT_from_t(tmps,tmpt,pres);
     % conservative temperature
-    tmps = gsw_SA_from_rho(dens,CT,pres);
-    temp(:,:,time) = tmpt;
-    salt(:,:,time) = tmps;
+    tmps = gsw_SA_from_rho_t_exact(dens,tmpt,pres);
+    temp(800:1000,1:26,time) = tmpt(800:1000,1:26);
+    salt(800:1000,1:26,time) = tmps(800:1000,1:26);
 end
 % write output
 writebin('OBWt_arctic_warmAtl_1680x1536',temp);
