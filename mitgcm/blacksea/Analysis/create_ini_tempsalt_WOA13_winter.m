@@ -42,6 +42,7 @@ latwoa = ncread(Twoafname,'lat');
 depthwoa = ncread(Twoafname,'depth');
 saltwoa = ncread(Swoafname,'s_an');
 
+return
 % Map WOA13 fields to MITgcm grid.    
 Mtmp = map_woa2MITgcm(tempwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa,8.89) ;
 Mslt = map_woa2MITgcm(saltwoa,LONC,LATC,lonwoa,latwoa,depths,depthwoa,22.4) ;

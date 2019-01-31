@@ -2,11 +2,12 @@ clear all
 close all
 
 root_folder = '/shared/projects/uniklima/globclim/milicak/JRA55/';
+root_folder = '/okyanus/users/milicak/dataset/JRA55/';
 
-fyear = 1958;
-lyear = 2015;
-fyear = 2016;
-lyear = 2016;
+% fyear = 1958;
+% lyear = 2015;
+% fyear = 2016;
+% lyear = 2016;
 fyear = 2017;
 lyear = 2017;
 

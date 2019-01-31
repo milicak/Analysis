@@ -1,7 +1,7 @@
 clear all
 close all
 
-root_folder = '/shared/projects/uniklima/globclim/milicak/JRA55/';
+root_folder = '/okyanus/users/milicak/dataset/JRA55/';
 
 % fyear = 1958;
 % lyear = 2016;
@@ -11,18 +11,19 @@ lyear = 2017;
 
 % var q_10
 
+foutnames = {'JRA55_rain','JRA55_tmp10m_degC','JRA55_spfh10m' ...
+             'JRA55_dsw','JRA55_dlw','JRA55_u10m','JRA55_v10m'};
+vars = {'rain','t_10','q_10','rsds','rlds','u_10','v_10'};
+varnames = {'prrn','tas_10m','huss_10m','rsds','rlds','uas_10m','vas_10m'};
+
 % foutnames = {'JRA55_rain','JRA55_tmp10m_degC','JRA55_spfh10m' ...
              % 'JRA55_dsw','JRA55_dlw','JRA55_u10m','JRA55_v10m'};
 % vars = {'rain','t_10','q_10','rsds','rlds','u_10','v_10'};
 % varnames = {'prrn','tas_10m','huss_10m','rsds','rlds','uas_10m','vas_10m'};
-% foutnames = {'JRA55_tmp10m_degC','JRA55_spfh10m' ...
-             % 'JRA55_dsw','JRA55_dlw','JRA55_u10m','JRA55_v10m'};
-% vars = {'t_10','q_10','rsds','rlds','u_10','v_10'};
-% varnames = {'tas_10m','huss_10m','rsds','rlds','uas_10m','vas_10m'};
 
-foutnames = {'JRA55_rain'}
-vars = {'rain'}
-varnames = {'prrn'}
+% foutnames = {'JRA55_rain'}
+% vars = {'rain'}
+% varnames = {'prrn'}
 
 for i = 1:length(vars)
     for year=fyear:lyear
