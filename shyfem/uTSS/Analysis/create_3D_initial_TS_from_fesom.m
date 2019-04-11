@@ -1,6 +1,6 @@
 clear all
 
-tmp = textread('/okyanus/users/milicak/Analysis/fesom/TSS/Analysis/nod3d.out');
+tmp = textread('nod3d.out');
 
 % longitude
 lon_fesom = tmp(:,2);
@@ -11,8 +11,8 @@ depth_fesom = tmp(:,4);
 
 % salinity and temperature values from 12/30/2017 from
 % /okyanus/users/eozsoy01/fes/ic/171230/oper.2017.oce.mean.nc
-salt_fesom = ncread('/okyanus/users/milicak/Analysis/fesom/TSS/Analysis/oper.2017.oce.mean.nc','salt');
-temp_fesom = ncread('/okyanus/users/milicak/Analysis/fesom/TSS/Analysis/oper.2017.oce.mean.nc','temp');
+salt_fesom = ncread('oper.2017.oce.mean.nc','salt');
+temp_fesom = ncread('oper.2017.oce.mean.nc','temp');
 
 clear tmp
 

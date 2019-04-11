@@ -45,7 +45,7 @@ dzf = [10.0,11.0,12.0,13.0,14.0,16.0,18.0,20.0,23.0,26.0, ...
        250.0,250.0,250.0,250.0,250.0,250.0,250.0];
 
 
-bathyfile = 'BATHY_4320x640_SO_9km.bin';
+bathyfile = '/home/milicak/models/MITgcm/Projects/mitgcm_sose/input/BATHY_4320x640_SO_9km.bin';
 bathy = readbin(bathyfile,[Nx Ny]);
 hFacMin = 0.3;                                                                  
 hFacMinDz = 50;                                                                  
@@ -160,18 +160,32 @@ for kk = 1:size(tempc,3)   % Loop over MITgcm time levels.
 end % kk
 return
 
-dnm = temp_mit(:,:,1:73);
-dnm(:,:,end+1:end+size(temp_mit,3)) = temp_mit;
-temp_mit = dnm;
-dnm = salt_mit(:,:,1:73);
-dnm(:,:,end+1:end+size(salt_mit,3)) = salt_mit;
-salt_mit = dnm;
-dnm = uvel_mit(:,:,1:73);
-dnm(:,:,end+1:end+size(uvel_mit,3)) = uvel_mit;
-uvel_mit = dnm;
-dnm = vvel_mit(:,:,1:73);
-dnm(:,:,end+1:end+size(vvel_mit,3)) = vvel_mit;
-vvel_mit = dnm;
+%dnm = temp_mit(:,:,1:73);
+%dnm(:,:,end+1:end+size(temp_mit,3)) = temp_mit;
+%temp_mit = dnm;
+%dnm = salt_mit(:,:,1:73);
+%dnm(:,:,end+1:end+size(salt_mit,3)) = salt_mit;
+%salt_mit = dnm;
+%dnm = uvel_mit(:,:,1:73);
+%dnm(:,:,end+1:end+size(uvel_mit,3)) = uvel_mit;
+%uvel_mit = dnm;
+%dnm = vvel_mit(:,:,1:73);
+%dnm(:,:,end+1:end+size(vvel_mit,3)) = vvel_mit;
+%vvel_mit = dnm;
+
+% add last 5 values same as last time;
+dnm = temp_mit(:,:,end);
+dnm=repmat(dnm,[1 1 5]);
+temp_mit(:,:,end+1:end+5) = dnm;
+dnm = salt_mit(:,:,end);
+dnm=repmat(dnm,[1 1 5]);
+salt_mit(:,:,end+1:end+5) = dnm;
+dnm = uvel_mit(:,:,end);
+dnm=repmat(dnm,[1 1 5]);
+uvel_mit(:,:,end+1:end+5) = dnm;
+dnm = vvel_mit(:,:,end);
+dnm=repmat(dnm,[1 1 5]);
+vvel_mit(:,:,end+1:end+5) = dnm;
 
 % mask = double(squeeze(mask(:,end,:)));
 % temp_mit = temp_mit.*mask;
