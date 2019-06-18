@@ -1,0 +1,32 @@
+var=Q2
+ncks -v $var wrfout_d01_2011-01-01_00:00:00 $var"_part1.nc"
+ncks -v $var wrfout_d01_2011-12-31_06:00:00 $var"_part2.nc"
+ncks -v $var wrfout_d01_2012-08-11_06:00:00 $var"_part3.nc"
+ncks -v $var wrfout_d01_2014-09-27_06:00:00 $var"_part4.nc"
+ncks -v $var wrfout_d01_2016-02-13_06:00:00 $var"_part5.nc"
+ncks -v $var wrfout_d01_2017-10-28_06:00:00 $var"_part6.nc"
+ncks -v $var wrfrst_d01_2017-12-30_00:00:00 $var"_part7.nc"
+
+
+
+ uas ve vas icin U10 ve V10, surface pressure icin PSFC
+
+18 for var in "ps" "tas" "qas" "rsds" "rsdl" "pr" 
+               hPa   K     1    W/m2  W/m2  kg m-2s-1
+               PSFC  T2   Q2   SWDOWN  GLW          
+                Pa   K  kg kg-1 W/m2  W/m2   mm
+
+0 for var in "uas" "vas"
+              ms-1  ms-1
+
+SWDOWN
+GLW
+
+RAINNC
+
+nohup rsync -avz -e ssh milicak@vilje.hpc.ntnu.no:/work/milicak/RUNS/mitgcm/Arctic_4km/*.nc Exp02_1/. &
+
+
+
+dnm=df3.RAINNC.compute()+df2.RAINC.compute()
+df3.RAINNC.data=dnm
