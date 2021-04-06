@@ -11,10 +11,10 @@ clear all; clear global;
 more off
 fprintf(1,' Reading/writing GEBCO 2014 30min bathymetry.\n\n') ;
 
-outfile = 'Blacksea_2km_bathy.data' ;
+outfile = 'Blacksea_2km_bathy_west_open.bin' ;
 %ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
-ibcaofile = '/okyanus/users/milicak/world_grid/GEBCO_2014_1D.nc';
-bogazfile = '/okyanus/users/milicak/world_grid/bathy_kwm.nc';
+ibcaofile = '/okyanus/users/milicak/dataset/world_bathy/GEBCO_2014_1D.nc';
+bogazfile = '/okyanus/users/milicak/dataset/world_bathy/bathy_kwm.nc';
 
 run set_blacksea_2km_grid
 [lambda,phi]=meshgrid(XC,YC) ;
@@ -93,13 +93,13 @@ fprintf(1,' done.\n\n') ;
 %tmpbath3=interp2(x,y,SSbath,lambda(inds),phi(inds),method);
 %bath3(inds) = tmpbath3 ;
 
-dnm = bath3;
-in = insphpoly(lambda,phi,xv,yv,0,90); 
-in = double(in);
-interpolant = scatteredInterpolant(lonbogaz(:),latbogaz(:),depthbogaz(:));
-tmpbath3 = interp2(lonbogaz,latbogaz,depthbogaz,lambda(in==1),phi(in==1),method);
-%bath3(in) = tmpbath3 ;
-return
+% dnm = bath3;
+% in = insphpoly(lambda,phi,xv,yv,0,90); 
+% in = double(in);
+% interpolant = scatteredInterpolant(lonbogaz(:),latbogaz(:),depthbogaz(:));
+% tmpbath3 = interp2(lonbogaz,latbogaz,depthbogaz,lambda(in==1),phi(in==1),method);
+% %bath3(in) = tmpbath3 ;
+% return
 
 
 % Figure before futzing.
@@ -180,7 +180,7 @@ end
     in = insphpoly(lambda,phi,xx,yy,0,90);
     in = double(in);
     bath4(in==1) = NaN;
-if 0
+if 1
     % open bosphorus
     bgzdpth = -60;
     bath4(63,121) = bgzdpth;
@@ -204,7 +204,7 @@ if 0
     bath4(61,118:120) = bgzdpth;
     bath4(62,120) = bgzdpth;
 end
-if 0 
+if 1 
     %open blacksea part of bosphorus
     bgzdpth2 = bath4(129,87);
     for ii = 77:86
@@ -214,3 +214,13 @@ if 0
     bath4(91,128) = -103.0;
 end
 
+% open boundary on the west side of the Marmara Sea
+bath4(25:36,1) = bath4(25:36,2);
+
+% Write out field.
+fprintf(1,' Writing field to %s\n',outfile) ;
+ieee='b';
+accuracy='real*8';
+fid=fopen(outfile,'w',ieee); 
+fwrite(fid,bath4',accuracy);
+fclose(fid);

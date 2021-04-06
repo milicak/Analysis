@@ -19,8 +19,8 @@ msk_t_rbcs_out = ['mask_T_rbcs.bin'];
 msk_s_rbcs_out = ['mask_S_rbcs.bin'];
 msk_pt1_rbcs_out = ['mask_Pt1_rbcs.bin'];
 
-batfile = 'Blacksea_2km_bathy.data' ;
-ibcaofile = '/export/grunchfs/unibjerknes/milicak/bckup/world_grid/GEBCO_2014_1D.nc';
+% batfile = 'Blacksea_2km_bathy.data' ;
+batfile = 'Blacksea_2km_bathy_west_open.bin';
 run set_blacksea_2km_grid 
 
 fid = fopen(batfile,'r',ieee); 
